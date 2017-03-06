@@ -1,10 +1,11 @@
 package karigo
 
 import (
-	"kkaribu/tchek"
 	"sort"
 	"testing"
 	"time"
+
+	"github.com/kkaribu/tchek"
 )
 
 func TestIntegrityCheck(t *testing.T) {
