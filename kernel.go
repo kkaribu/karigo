@@ -4,8 +4,6 @@ import (
 	"errors"
 	"fmt"
 
-	"kkaribu/valik"
-
 	"github.com/kkaribu/jsonapi"
 )
 
@@ -86,11 +84,6 @@ func KernelInsertResource(ctx *Ctx) error {
 		panic(err)
 	}
 
-	errs := valik.Validate(res)
-	if len(errs) > 0 {
-		return errors.New("karigo: invalid resource")
-	}
-
 	err = ctx.Store.InsertResource(ctx.Tx, res)
 	if err != nil {
 		panic(err)
@@ -111,11 +104,6 @@ func KernelUpdateResource(ctx *Ctx) error {
 	err = jsonapi.Unmarshal(ctx.Body, &res)
 	if err != nil {
 		panic(err)
-	}
-
-	errs := valik.Validate(res)
-	if len(errs) > 0 {
-		return errors.New("karigo: invalid resource")
 	}
 
 	err = ctx.Store.InsertResource(ctx.Tx, res) // TODO
