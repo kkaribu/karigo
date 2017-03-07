@@ -126,13 +126,13 @@ func KernelDeleteResource(ctx *Ctx) error {
 
 // KernelGetRelationship ...
 func KernelGetRelationship(ctx *Ctx) error {
-	rel, err := ctx.Store.SelectRelationship(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.Rel)
+	rel, err := ctx.Store.SelectRelationship(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID)
 	if err != nil {
 		return err
 	}
 
 	ctx.Doc.Identifier = jsonapi.Identifier{
-		Type: ctx.URL.Rel.Type,
+		Type: ctx.URL.FromFilter.Type,
 		ID:   rel,
 	}
 
@@ -144,13 +144,13 @@ func KernelGetRelationship(ctx *Ctx) error {
 // KernelGetRelationships ...
 func KernelGetRelationships(ctx *Ctx) error {
 	// fmt.Printf("REL: %+v\n", ctx.URL.Rel)
-	rels, err := ctx.Store.SelectRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.Rel)
+	rels, err := ctx.Store.SelectRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID)
 	if err != nil {
 		return err
 	}
 	// fmt.Printf("LEN(RELS): %d\n", len(rels))
 
-	ctx.Doc.Identifiers = jsonapi.NewIdentifiers(ctx.URL.Rel.Type, rels)
+	ctx.Doc.Identifiers = jsonapi.NewIdentifiers(ctx.URL.FromFilter.Type, rels)
 
 	// body, err := jsonapi.Marshal(jsonapi.NewIdentifiers(ctx.URL.Rel.Type, rels), ctx.URL, ctx.Options)
 
@@ -163,7 +163,7 @@ func KernelInsertRelationships(ctx *Ctx) error {
 
 	_ = jsonapi.Unmarshal(ctx.Body, &relIDs)
 
-	err := ctx.Store.InsertRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.Rel, relIDs.IDs())
+	err := ctx.Store.InsertRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, relIDs.IDs())
 	if err != nil {
 		return err
 	}
@@ -177,7 +177,7 @@ func KernelUpdateRelationship(ctx *Ctx) error {
 
 	_ = jsonapi.Unmarshal(ctx.Body, &relID)
 
-	err := ctx.Store.UpdateRelationship(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.Rel, relID.ID)
+	err := ctx.Store.UpdateRelationship(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, relID.ID)
 	if err != nil {
 		return err
 	}
@@ -191,7 +191,7 @@ func KernelUpdateRelationships(ctx *Ctx) error {
 
 	_ = jsonapi.Unmarshal(ctx.Body, &relIDs)
 
-	err := ctx.Store.UpdateRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.Rel, relIDs.IDs())
+	err := ctx.Store.UpdateRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, relIDs.IDs())
 	if err != nil {
 		return err
 	}
@@ -205,7 +205,7 @@ func KernelDeleteRelationships(ctx *Ctx) error {
 
 	_ = jsonapi.Unmarshal(ctx.Body, &relIDs)
 
-	err := ctx.Store.DeleteRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.Rel, relIDs.IDs())
+	err := ctx.Store.DeleteRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, relIDs.IDs())
 	if err != nil {
 		return err
 	}

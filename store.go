@@ -20,14 +20,14 @@ type Store interface {
 	ResourceExists(tx Tx, resType, resID string) (bool, error)
 
 	// Relationship manipulation
-	SelectRelationship(tx Tx, resType string, resID string, rel jsonapi.Rel) (string, error)
-	SelectRelationships(tx Tx, resType string, resID string, rel jsonapi.Rel) ([]string, error)
-	UpdateRelationship(tx Tx, resType string, resID string, rel jsonapi.Rel, relID string) error
-	UpdateRelationships(tx Tx, resType string, resID string, rel jsonapi.Rel, relIDs []string) error
-	InsertRelationships(tx Tx, resType string, resID string, rel jsonapi.Rel, relIDs []string) error
-	DeleteRelationship(tx Tx, resType, resID string, rel jsonapi.Rel, relID string) error
-	DeleteRelationships(tx Tx, resType, resID string, rel jsonapi.Rel, relIDs []string) error
-	DeleteAllRelationships(tx Tx, resType, resID string, rel jsonapi.Rel) error
+	SelectRelationship(tx Tx, resType string, resID string) (string, error)
+	SelectRelationships(tx Tx, resType string, resID string) ([]string, error)
+	UpdateRelationship(tx Tx, resType string, resID string, relID string) error
+	UpdateRelationships(tx Tx, resType string, resID string, relIDs []string) error
+	InsertRelationships(tx Tx, resType string, resID string, relIDs []string) error
+	DeleteRelationship(tx Tx, resType, resID string, relID string) error
+	DeleteRelationships(tx Tx, resType, resID string, relIDs []string) error
+	DeleteAllRelationships(tx Tx, resType, resID string) error
 
 	// Database management
 	SetRegistry(reg *jsonapi.Registry)
