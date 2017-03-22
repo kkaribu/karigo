@@ -11,10 +11,10 @@ import (
 func TestIntegrityCheck(t *testing.T) {
 	app := NewApp(nil)
 
-	app.RegisterType(ValidType1{})
-	app.RegisterType(ValidType2{})
-	app.RegisterType(ValidType3{})
-	app.RegisterType(InvalidType1{})
+	app.RegisterType(&ValidType1{})
+	app.RegisterType(&ValidType2{})
+	app.RegisterType(&ValidType3{})
+	app.RegisterType(&InvalidType1{})
 
 	errs := app.Check()
 	expectations := []string{
