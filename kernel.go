@@ -146,7 +146,7 @@ func KernelDeleteResource(ctx *Ctx) error {
 
 // KernelGetRelationship ...
 func KernelGetRelationship(ctx *Ctx) error {
-	rel, err := ctx.Store.SelectRelationship(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID)
+	rel, err := ctx.Store.SelectRelationship(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.FromFilter.Type)
 	if err != nil {
 		return err
 	}
@@ -164,7 +164,7 @@ func KernelGetRelationship(ctx *Ctx) error {
 // KernelGetRelationships ...
 func KernelGetRelationships(ctx *Ctx) error {
 	// fmt.Printf("REL: %+v\n", ctx.URL.Rel)
-	rels, err := ctx.Store.SelectRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID)
+	rels, err := ctx.Store.SelectRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.FromFilter.Type)
 	if err != nil {
 		return err
 	}
@@ -183,7 +183,7 @@ func KernelInsertRelationships(ctx *Ctx) error {
 
 	_, _ = jsonapi.Unmarshal(ctx.Body, &relIDs)
 
-	err := ctx.Store.InsertRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, relIDs.IDs())
+	err := ctx.Store.InsertRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.FromFilter.Type, relIDs.IDs())
 	if err != nil {
 		return err
 	}
@@ -197,7 +197,7 @@ func KernelUpdateRelationship(ctx *Ctx) error {
 
 	_, _ = jsonapi.Unmarshal(ctx.Body, &relID)
 
-	err := ctx.Store.UpdateRelationship(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, relID.ID)
+	err := ctx.Store.UpdateRelationship(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.FromFilter.Type, relID.ID)
 	if err != nil {
 		return err
 	}
@@ -211,7 +211,7 @@ func KernelUpdateRelationships(ctx *Ctx) error {
 
 	_, _ = jsonapi.Unmarshal(ctx.Body, &relIDs)
 
-	err := ctx.Store.UpdateRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, relIDs.IDs())
+	err := ctx.Store.UpdateRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.FromFilter.Type, relIDs.IDs())
 	if err != nil {
 		return err
 	}
@@ -225,7 +225,7 @@ func KernelDeleteRelationships(ctx *Ctx) error {
 
 	_, _ = jsonapi.Unmarshal(ctx.Body, &relIDs)
 
-	err := ctx.Store.DeleteRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, relIDs.IDs())
+	err := ctx.Store.DeleteRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.FromFilter.Name, relIDs.IDs())
 	if err != nil {
 		return err
 	}
