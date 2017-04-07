@@ -11,9 +11,9 @@ type Store interface {
 	Begin() (Tx, error)
 
 	// Resource manipulation
-	SelectCollection(tx Tx, resType string, params *jsonapi.Params, c jsonapi.Collection) error
-	SelectResource(tx Tx, resType, resID string, params *jsonapi.Params, r jsonapi.Resource) error
-	SelectInclusions(tx Tx, originType, originID string, params *jsonapi.Params) ([]jsonapi.Resource, error)
+	SelectCollection(tx Tx, resType string, from jsonapi.FromFilter, params *jsonapi.Params, c jsonapi.Collection) error
+	SelectResource(tx Tx, resType, resID string, from jsonapi.FromFilter, params *jsonapi.Params, r jsonapi.Resource) error
+	SelectInclusions(tx Tx, originType, originID string, from jsonapi.FromFilter, params *jsonapi.Params) ([]jsonapi.Resource, error)
 	InsertResource(tx Tx, r jsonapi.Resource) error
 	UpdateResource(tx Tx, resType, resID string, updates map[string]interface{}) error
 	DeleteResource(tx Tx, resType, resID string) error
