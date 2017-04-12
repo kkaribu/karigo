@@ -29,6 +29,9 @@ type Store interface {
 	DeleteRelationships(tx Tx, resType, resID, relName string, relIDs []string) error
 	DeleteAllRelationships(tx Tx, resType, resID, relName string) error
 
+	// Other
+	CountCollectionSize(tx Tx, resType string, from jsonapi.FromFilter, params *jsonapi.Params) (int, error)
+
 	// Database management
 	SetRegistry(reg *jsonapi.Registry)
 	Open(user string, pw string, host string, dbName string) error
