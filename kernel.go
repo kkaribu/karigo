@@ -12,10 +12,10 @@ type Kernel func(ctx *Ctx) error
 
 // executeKernel ...
 func (a *App) executeKernel(ctx *Ctx) {
-	fmt.Printf("Looking for %s.\n", ctx.Method+" "+ctx.URL.Route)
+	ctx.AddToLog(fmt.Sprintf("Looking for %s.\n", ctx.Method+" "+ctx.URL.Route))
 
 	if kernel, ok := a.Kernels[ctx.Method+" "+ctx.URL.Route]; ok {
-		fmt.Println("Kernel found.")
+		ctx.AddToLog("Kernel found.")
 		err := kernel(ctx)
 		if err != nil {
 			panic(jsonapi.NewErrInternal())
@@ -32,7 +32,7 @@ func (a *App) executeKernel(ctx *Ctx) {
 			ctx.Doc.Include(inc)
 		}
 	} else {
-		fmt.Println("Kernel not found.")
+		ctx.AddToLog("Kernel not found.")
 		panic(jsonapi.NewErrNotFound())
 	}
 }
