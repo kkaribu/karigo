@@ -12,7 +12,7 @@ type Kernel func(ctx *Ctx) error
 
 // executeKernel ...
 func (a *App) executeKernel(ctx *Ctx) {
-	ctx.AddToLog(fmt.Sprintf("Looking for %s.\n", ctx.Method+" "+ctx.URL.Route))
+	ctx.AddToLog(fmt.Sprintf("Looking for %s.", ctx.Method+" "+ctx.URL.Route))
 
 	if kernel, ok := a.Kernels[ctx.Method+" "+ctx.URL.Route]; ok {
 		ctx.AddToLog("Kernel found.")
