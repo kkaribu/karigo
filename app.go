@@ -246,6 +246,14 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx.Doc.Options.Fields = ctx.URL.Params.Fields
 	ctx.Doc.Options.RelData = ctx.URL.Params.RelData
 
+	// Defaults
+	if ctx.URL.Params.PageNumber <= 0 {
+		ctx.URL.Params.PageNumber = 1
+	}
+	if ctx.URL.Params.PageSize <= 0 {
+		ctx.URL.Params.PageSize = 1000
+	}
+
 	// Parse JWT
 	a.parseJWT(ctx, r)
 
