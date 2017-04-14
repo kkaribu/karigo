@@ -94,6 +94,11 @@ func runCmd() cli.Command {
 
 			app.RunHook("before-run")
 
+			if app.Debug {
+				fmt.Println("Debug: on")
+			} else {
+				fmt.Println("Debug: off")
+			}
 			fmt.Printf("Now listening on %d...\n", app.Port)
 			fmt.Println()
 
