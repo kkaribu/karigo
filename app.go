@@ -91,6 +91,7 @@ func (a *App) ReadConfig(data []byte) error {
 
 	a.Name = config.Name
 	a.Port = config.Port
+	a.Debug = config.Debug
 
 	// Connect to database
 	a.Info("Connecting to database...")
