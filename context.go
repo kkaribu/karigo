@@ -64,7 +64,7 @@ func (ctx *Ctx) SaveLog() {
 	var data string
 
 	for _, l := range ctx.Log {
-		data = l + "\n"
+		data += l + "\n"
 	}
 	data = data[:len(data)-1] // Remove last \n
 
