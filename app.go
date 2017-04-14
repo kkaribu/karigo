@@ -220,6 +220,11 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 			fmt.Println()
 		}
+
+		// Print log
+		if a.Debug {
+			ctx.SaveLog()
+		}
 	}()
 
 	// Initialize context
@@ -284,11 +289,6 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Write(body)
 
 	ctx.AddToLog("Response sent.")
-
-	// Print log
-	if a.Debug {
-		ctx.SaveLog()
-	}
 }
 
 // Get adds a kernel for handling GET requests.
