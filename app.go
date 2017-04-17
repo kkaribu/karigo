@@ -231,9 +231,7 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx.Store = a.Store
 	ctx.Method = r.Method
 	ctx.Body, _ = ioutil.ReadAll(r.Body)
-	ctx.Doc = &jsonapi.Document{
-		Options: jsonapi.NewOptions("", nil),
-	}
+	ctx.Doc = jsonapi.NewDocument()
 
 	ctx.AddToLog("Context initialized.")
 
