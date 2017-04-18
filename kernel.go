@@ -21,6 +21,27 @@ func (a *App) executeKernel(ctx *Ctx) {
 			panic(jsonapi.NewErrInternal())
 		}
 
+		// Pagination
+		size, err := ctx.Store.CountCollectionSize(ctx.Tx, ctx.URL.ResType, ctx.URL.FromFilter, ctx.URL.Params)
+		if err != nil {
+			panic(jsonapi.NewErrInternal())
+		}
+
+		// TODO just to make sure, but is it necessary?
+		if ctx.URL.Params.PageSize <= 0 {
+			ctx.URL.Params.PageSize = 1000
+		}
+
+		var totalPages = 0
+		if size%ctx.URL.Params.PageSize == 0 {
+			totalPages = size / ctx.URL.Params.PageSize
+		} else {
+			totalPages = (size / ctx.URL.Params.PageSize) + 1
+		}
+
+		// ctx.Doc.Options.Meta["total-pages"] = (size / ctx.URL.Params.PageSize) + 1
+		ctx.Doc.Options.Meta["total-pages"] = totalPages
+
 		// Inclusions
 		inclusions, err := ctx.Store.SelectInclusions(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.FromFilter, ctx.URL.Params)
 		if err != nil {
