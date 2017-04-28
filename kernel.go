@@ -42,6 +42,30 @@ func (a *App) executeKernel(ctx *Ctx) {
 		// ctx.Doc.Options.Meta["total-pages"] = (size / ctx.URL.Params.PageSize) + 1
 		ctx.Doc.Options.Meta["total-pages"] = totalPages
 
+		pageNumber := ctx.Doc.URL.Params.PageNumber
+
+		ctx.Doc.Links["self"] = jsonapi.Link{HRef: ctx.URL.NormalizeURL()}
+
+		ctx.URL.Params.PageNumber = 1
+		ctx.Doc.Links["first"] = jsonapi.Link{HRef: ctx.URL.NormalizeURL()}
+
+		ctx.URL.Params.PageNumber = pageNumber - 1
+		if ctx.URL.Params.PageNumber == 0 {
+			ctx.URL.Params.PageNumber = 1
+		}
+		ctx.Doc.Links["prev"] = jsonapi.Link{HRef: ctx.URL.NormalizeURL()}
+
+		ctx.URL.Params.PageNumber = pageNumber + 1
+		if ctx.URL.Params.PageNumber > totalPages {
+			ctx.URL.Params.PageNumber = totalPages
+		}
+		ctx.Doc.Links["next"] = jsonapi.Link{HRef: ctx.URL.NormalizeURL()}
+
+		ctx.URL.Params.PageNumber = totalPages
+		ctx.Doc.Links["last"] = jsonapi.Link{HRef: ctx.URL.NormalizeURL()}
+
+		ctx.URL.Params.PageNumber = pageNumber
+
 		// Inclusions
 		inclusions, err := ctx.Store.SelectInclusions(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.FromFilter, ctx.URL.Params)
 		if err != nil {
