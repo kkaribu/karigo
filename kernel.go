@@ -32,11 +32,9 @@ func (a *App) executeKernel(ctx *Ctx) {
 			ctx.URL.Params.PageSize = 1000
 		}
 
-		var totalPages = 0
-		if size%ctx.URL.Params.PageSize == 0 {
-			totalPages = size / ctx.URL.Params.PageSize
-		} else {
-			totalPages = (size / ctx.URL.Params.PageSize) + 1
+		totalPages := size / ctx.URL.Params.PageSize
+		if size%ctx.URL.Params.PageSize != 0 {
+			totalPages++
 		}
 
 		// ctx.Doc.Options.Meta["total-pages"] = (size / ctx.URL.Params.PageSize) + 1
