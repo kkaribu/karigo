@@ -100,7 +100,7 @@ func KernelGetResource(ctx *Ctx) error {
 func KernelInsertResource(ctx *Ctx) error {
 	res := ctx.App.Resource(ctx.URL.ResType)
 
-	_, err := jsonapi.Unmarshal(ctx.Body, &res)
+	_, err := jsonapi.Unmarshal(ctx.Body, res)
 	if err != nil {
 		panic(err)
 	}
@@ -132,7 +132,7 @@ func KernelUpdateResource(ctx *Ctx) error {
 		return err
 	}
 
-	_, err = jsonapi.Unmarshal(ctx.Body, &res)
+	_, err = jsonapi.Unmarshal(ctx.Body, res)
 	if err != nil {
 		panic(err)
 	}
