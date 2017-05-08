@@ -42,7 +42,7 @@ func (a *App) executeKernel(ctx *Ctx) {
 			// ctx.Doc.Options.Meta["total-pages"] = (size / ctx.URL.Params.PageSize) + 1
 			ctx.Doc.Options.Meta["total-pages"] = totalPages
 
-			pageNumber := ctx.Doc.URL.Params.PageNumber
+			pageNumber := ctx.URL.Params.PageNumber
 
 			ctx.Doc.Links["self"] = jsonapi.Link{HRef: ctx.URL.NormalizeURL()}
 
