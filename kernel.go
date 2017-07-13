@@ -22,7 +22,7 @@ func (a *App) executeKernel(ctx *Ctx) {
 		}
 
 		// Pagination
-		if ctx.URL.IsCol {
+		if ctx.URL.IsCol && ctx.Method == "GET" {
 			var size int
 			size, err = ctx.Store.CountCollectionSize(ctx.Tx, ctx.URL.ResType, ctx.URL.FromFilter, ctx.URL.Params)
 			if err != nil {
