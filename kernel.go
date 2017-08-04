@@ -40,7 +40,7 @@ func (a *App) executeKernel(ctx *Ctx) {
 			}
 
 			// ctx.Doc.Options.Meta["total-pages"] = (size / ctx.URL.Params.PageSize) + 1
-			ctx.Doc.Options.Meta["total-pages"] = totalPages
+			ctx.Doc.Meta["total-pages"] = totalPages
 
 			pageNumber := ctx.URL.Params.PageNumber
 

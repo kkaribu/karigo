@@ -237,12 +237,12 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	// Parse URL
 	ctx.URL, _ = jsonapi.ParseURL(a.Registry, r.URL)
-	ctx.Doc.Options.Meta["interpreted-url"] = ctx.URL.URLNormalized
+	ctx.Doc.Meta["interpreted-url"] = ctx.URL.URLNormalized
 
 	ctx.AddToLog("URL parsed.")
 
-	ctx.Doc.Options.Fields = ctx.URL.Params.Fields
-	ctx.Doc.Options.RelData = ctx.URL.Params.RelData
+	// ctx.Doc.Fields = ctx.URL.Params.Fields
+	ctx.Doc.RelData = ctx.URL.Params.RelData
 
 	// Defaults
 	if ctx.URL.Params.PageNumber <= 0 {
