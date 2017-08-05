@@ -241,7 +241,28 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	ctx.AddToLog("URL parsed.")
 
-	// ctx.Doc.Fields = ctx.URL.Params.Fields
+	// Parse body
+	if ctx.Method == "POST" || ctx.Method == "PATCH" {
+		var err error
+		if ctx.URL.ResID != "" && ctx.URL.RelKind != "self" && !ctx.URL.IsCol {
+			// Resource
+			ctx.Doc.Resource = ctx.App.Resource(ctx.URL.ResType)
+			_, err = jsonapi.Unmarshal(ctx.Body, ctx.Doc.Resource)
+		} else if ctx.URL.RelKind == "self" && !ctx.URL.IsCol {
+			// Identifier
+			ctx.Doc.Identifier = jsonapi.Identifier{}
+			_, err = jsonapi.Unmarshal(ctx.Body, ctx.Doc.Identifier)
+		} else if ctx.URL.RelKind == "self" && ctx.URL.IsCol {
+			// Identifiers
+			ctx.Doc.Identifiers = jsonapi.Identifiers{}
+			_, err = jsonapi.Unmarshal(ctx.Body, ctx.Doc.Identifiers)
+		}
+		if err != nil {
+			panic(jsonapi.NewErrBadRequest())
+		}
+	}
+
+	// ctx.Doc.Fields = ctx.URL.Params.Fields/
 	ctx.Doc.RelData = ctx.URL.Params.RelData
 
 	// Defaults
