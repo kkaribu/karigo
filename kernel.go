@@ -132,11 +132,6 @@ func KernelInsertResource(ctx *Ctx) error {
 
 	errs := res.Validate()
 	if len(errs) > 0 {
-		ctx.Body, err = jsonapi.Marshal(errs, nil, nil)
-		if err != nil {
-			return err
-		}
-
 		return jsonapi.NewErrBadRequest()
 	}
 
@@ -164,11 +159,6 @@ func KernelUpdateResource(ctx *Ctx) error {
 
 	errs := res.Validate()
 	if len(errs) > 0 {
-		ctx.Body, err = jsonapi.Marshal(errs, nil, nil)
-		if err != nil {
-			return err
-		}
-
 		return jsonapi.NewErrBadRequest()
 	}
 

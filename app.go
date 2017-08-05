@@ -209,12 +209,12 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(jaerr.Status)
 
 			var body []byte
-			var err error
+			// var err error
 
-			body, err = jsonapi.Marshal(jaerr, &jsonapi.URL{}, nil)
-			if err != nil {
-				body = []byte("{\"errors\":{\"title\":\"Epic Fail\"}}")
-			}
+			// body, err = jsonapi.Marshal(jaerr, &jsonapi.URL{}, nil)
+			// if err != nil {
+			body = []byte("{\"errors\":{\"title\":\"Epic Fail\"}}")
+			// }
 
 			_, _ = w.Write(body)
 
