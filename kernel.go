@@ -97,7 +97,7 @@ func KernelGetCollection(ctx *Ctx) error {
 		return err
 	}
 
-	ctx.Out.Collection = col
+	ctx.Out.Data = col
 
 	// body, err := jsonapi.Marshal(res, ctx.URL, ctx.Options)
 
@@ -114,7 +114,7 @@ func KernelGetResource(ctx *Ctx) error {
 		return err
 	}
 
-	ctx.Out.Resource = res
+	ctx.Out.Data = res
 
 	// body, err := jsonapi.Marshal(res, ctx.URL, ctx.Options)
 
@@ -187,7 +187,7 @@ func KernelGetRelationship(ctx *Ctx) error {
 		return err
 	}
 
-	ctx.Out.Identifier = jsonapi.Identifier{
+	ctx.Out.Data = jsonapi.Identifier{
 		Type: ctx.URL.FromFilter.Type,
 		ID:   rel,
 	}
@@ -206,7 +206,7 @@ func KernelGetRelationships(ctx *Ctx) error {
 	}
 	// fmt.Printf("LEN(RELS): %d\n", len(rels))
 
-	ctx.Out.Identifiers = jsonapi.NewIdentifiers(ctx.URL.FromFilter.Type, rels)
+	ctx.Out.Data = jsonapi.NewIdentifiers(ctx.URL.FromFilter.Type, rels)
 
 	// body, err := jsonapi.Marshal(jsonapi.NewIdentifiers(ctx.URL.Rel.Type, rels), ctx.URL, ctx.Options)
 
