@@ -243,27 +243,7 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	// Parse body
 	var err error
-	if ctx.Method == "POST" {
-		if ctx.URL.Type == "col" {
-			// Create resource
-			ctx.Doc.Resource = ctx.App.Resource(ctx.URL.ResType)
-			_, err = jsonapi.Unmarshal(ctx.Body, ctx.Doc.Resource)
-		} else if ctx.URL.Type == "self" && ctx.URL.IsCol {
-			// Create relatoinships
-			ctx.Doc.Identifiers = jsonapi.Identifiers{}
-			_, err = jsonapi.Unmarshal(ctx.Body, ctx.Doc.Identifiers)
-		}
-	} else if ctx.Method == "PATCH" {
-		if ctx.URL.Type == "res" {
-			// Update resource
-			ctx.Doc.Resource = ctx.App.Resource(ctx.URL.ResType)
-			_, err = jsonapi.Unmarshal(ctx.Body, ctx.Doc.Resource)
-		} else if ctx.URL.Type == "self" && ctx.URL.IsCol {
-			// Create relatoinships
-			ctx.Doc.Identifiers = jsonapi.Identifiers{}
-			_, err = jsonapi.Unmarshal(ctx.Body, ctx.Doc.Identifiers)
-		}
-	}
+	ctx.Payload, err = jsonapi.NewPayload(ctx.Method, ctx.URL, ctx.Body, ctx.App.Registry)
 	if err != nil {
 		panic(jsonapi.NewErrBadRequest())
 	}

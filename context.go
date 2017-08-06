@@ -45,6 +45,9 @@ type Ctx struct {
 	ID     string
 	Groups []string
 
+	// Payload
+	Payload *jsonapi.Payload
+
 	// Document
 	Doc *jsonapi.Document
 }
