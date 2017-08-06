@@ -45,11 +45,9 @@ type Ctx struct {
 	ID     string
 	Groups []string
 
-	// Payload
-	Payload *jsonapi.Payload
-
-	// Document
-	Doc *jsonapi.Document
+	// Payloads
+	In  *jsonapi.Payload
+	Out *jsonapi.Document
 }
 
 // AddToLog adds a record to the context's log.

@@ -231,25 +231,25 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx.Store = a.Store
 	ctx.Method = r.Method
 	ctx.Body, _ = ioutil.ReadAll(r.Body)
-	ctx.Doc = jsonapi.NewDocument()
+	ctx.Out = jsonapi.NewDocument()
 
 	ctx.AddToLog("Context initialized.")
 
 	// Parse URL
 	ctx.URL, _ = jsonapi.ParseURL(a.Registry, r.URL)
-	ctx.Doc.Meta["interpreted-url"] = ctx.URL.URLNormalized
+	ctx.Out.Meta["interpreted-url"] = ctx.URL.URLNormalized
 
 	ctx.AddToLog("URL parsed.")
 
 	// Parse body
 	var err error
-	ctx.Payload, err = jsonapi.NewPayload(ctx.Method, ctx.URL, ctx.Body, ctx.App.Registry)
+	ctx.In, err = jsonapi.NewPayload(ctx.Method, ctx.URL, ctx.Body, ctx.App.Registry)
 	if err != nil {
 		panic(jsonapi.NewErrBadRequest())
 	}
 
-	// ctx.Doc.Fields = ctx.URL.Params.Fields/
-	ctx.Doc.RelData = ctx.URL.Params.RelData
+	// ctx.Out.Fields = ctx.URL.Params.Fields/
+	ctx.Out.RelData = ctx.URL.Params.RelData
 
 	// Defaults
 	if ctx.URL.Params.PageNumber <= 0 {
@@ -286,7 +286,7 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	// Check Document
 	var body []byte
-	body, err = ctx.Doc.MarshalJSON()
+	body, err = ctx.Out.MarshalJSON()
 	if err != nil {
 		panic(jsonapi.NewErrInternal())
 	}

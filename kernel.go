@@ -39,30 +39,30 @@ func (a *App) executeKernel(ctx *Ctx) {
 				totalPages++
 			}
 
-			// ctx.Doc.Options.Meta["total-pages"] = (size / ctx.URL.Params.PageSize) + 1
-			ctx.Doc.Meta["total-pages"] = totalPages
+			// ctx.Out.Options.Meta["total-pages"] = (size / ctx.URL.Params.PageSize) + 1
+			ctx.Out.Meta["total-pages"] = totalPages
 
 			pageNumber := ctx.URL.Params.PageNumber
 
-			ctx.Doc.Links["self"] = jsonapi.Link{HRef: ctx.URL.NormalizeURL()}
+			ctx.Out.Links["self"] = jsonapi.Link{HRef: ctx.URL.NormalizeURL()}
 
 			ctx.URL.Params.PageNumber = 1
-			ctx.Doc.Links["first"] = jsonapi.Link{HRef: ctx.URL.NormalizeURL()}
+			ctx.Out.Links["first"] = jsonapi.Link{HRef: ctx.URL.NormalizeURL()}
 
 			ctx.URL.Params.PageNumber = pageNumber - 1
 			if ctx.URL.Params.PageNumber == 0 {
 				ctx.URL.Params.PageNumber = 1
 			}
-			ctx.Doc.Links["prev"] = jsonapi.Link{HRef: ctx.URL.NormalizeURL()}
+			ctx.Out.Links["prev"] = jsonapi.Link{HRef: ctx.URL.NormalizeURL()}
 
 			ctx.URL.Params.PageNumber = pageNumber + 1
 			if ctx.URL.Params.PageNumber > totalPages {
 				ctx.URL.Params.PageNumber = totalPages
 			}
-			ctx.Doc.Links["next"] = jsonapi.Link{HRef: ctx.URL.NormalizeURL()}
+			ctx.Out.Links["next"] = jsonapi.Link{HRef: ctx.URL.NormalizeURL()}
 
 			ctx.URL.Params.PageNumber = totalPages
-			ctx.Doc.Links["last"] = jsonapi.Link{HRef: ctx.URL.NormalizeURL()}
+			ctx.Out.Links["last"] = jsonapi.Link{HRef: ctx.URL.NormalizeURL()}
 
 			ctx.URL.Params.PageNumber = pageNumber
 		}
@@ -75,7 +75,7 @@ func (a *App) executeKernel(ctx *Ctx) {
 		for _, inc := range inclusions {
 			// id, typ := inc.IDAndType()
 			// fmt.Printf("About to include %s %s\n\n\n", typ, id)
-			ctx.Doc.Include(inc)
+			ctx.Out.Include(inc)
 		}
 	} else {
 		ctx.AddToLog("Kernel not found.")
@@ -97,7 +97,7 @@ func KernelGetCollection(ctx *Ctx) error {
 		return err
 	}
 
-	ctx.Doc.Collection = col
+	ctx.Out.Collection = col
 
 	// body, err := jsonapi.Marshal(res, ctx.URL, ctx.Options)
 
@@ -114,7 +114,7 @@ func KernelGetResource(ctx *Ctx) error {
 		return err
 	}
 
-	ctx.Doc.Resource = res
+	ctx.Out.Resource = res
 
 	// body, err := jsonapi.Marshal(res, ctx.URL, ctx.Options)
 
@@ -187,7 +187,7 @@ func KernelGetRelationship(ctx *Ctx) error {
 		return err
 	}
 
-	ctx.Doc.Identifier = jsonapi.Identifier{
+	ctx.Out.Identifier = jsonapi.Identifier{
 		Type: ctx.URL.FromFilter.Type,
 		ID:   rel,
 	}
@@ -206,7 +206,7 @@ func KernelGetRelationships(ctx *Ctx) error {
 	}
 	// fmt.Printf("LEN(RELS): %d\n", len(rels))
 
-	ctx.Doc.Identifiers = jsonapi.NewIdentifiers(ctx.URL.FromFilter.Type, rels)
+	ctx.Out.Identifiers = jsonapi.NewIdentifiers(ctx.URL.FromFilter.Type, rels)
 
 	// body, err := jsonapi.Marshal(jsonapi.NewIdentifiers(ctx.URL.Rel.Type, rels), ctx.URL, ctx.Options)
 
