@@ -286,7 +286,7 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	// Check Document
 	var body []byte
-	body, err = ctx.Out.MarshalJSON()
+	body, err = jsonapi.Marshal(ctx.Out, ctx.URL)
 	if err != nil {
 		panic(jsonapi.NewErrInternal())
 	}
