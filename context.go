@@ -38,7 +38,6 @@ type Ctx struct {
 	W      ResponseWriter `json:"-"`
 	Method string
 	URL    *jsonapi.URL
-	Body   []byte
 
 	// User
 	JWT    *jwt.Token `json:"-"`

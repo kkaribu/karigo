@@ -230,7 +230,6 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Initialize context
 	ctx.Store = a.Store
 	ctx.Method = r.Method
-	ctx.Body, _ = ioutil.ReadAll(r.Body)
 	ctx.Out = jsonapi.NewDocument()
 
 	ctx.AddToLog("Context initialized.")
@@ -242,8 +241,11 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx.AddToLog("URL parsed.")
 
 	// Parse body
-	var err error
-	ctx.In, err = jsonapi.Unmarshal(ctx.Body, ctx.URL, ctx.App.Registry)
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(jsonapi.NewErrInternal())
+	}
+	ctx.In, err = jsonapi.Unmarshal(body, ctx.URL, ctx.App.Registry)
 	if err != nil {
 		panic(jsonapi.NewErrBadRequest())
 	}
@@ -285,7 +287,6 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx.AddToLog("Kernel executed.")
 
 	// Check Document
-	var body []byte
 	body, err = jsonapi.Marshal(ctx.Out, ctx.URL)
 	if err != nil {
 		panic(jsonapi.NewErrInternal())
