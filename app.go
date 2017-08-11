@@ -243,7 +243,7 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	// Parse body
 	var err error
-	ctx.In, err = jsonapi.NewPayload(ctx.Method, ctx.URL, ctx.Body, ctx.App.Registry)
+	ctx.In, err = jsonapi.Unmarshal(ctx.Body, ctx.URL, ctx.App.Registry)
 	if err != nil {
 		panic(jsonapi.NewErrBadRequest())
 	}
