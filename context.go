@@ -27,9 +27,8 @@ func NewCtx(a *App, w ResponseWriter, r *http.Request) *Ctx {
 type Ctx struct {
 	sync.Mutex `json:"-"`
 
-	App   *App  `json:"-"`
-	Store Store `json:"-"`
-	Tx    Tx
+	App *App `json:"-"`
+	Tx  Tx
 
 	// Log
 	Log []string

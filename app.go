@@ -228,7 +228,6 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}()
 
 	// Initialize context
-	ctx.Store = a.Store
 	ctx.Method = r.Method
 	ctx.Out = jsonapi.NewDocument()
 
