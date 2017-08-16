@@ -5,6 +5,7 @@ import "github.com/kkaribu/jsonapi"
 // Store ...
 type Store interface {
 	// Connection management
+	Open(user string, pw string, host string, dbName string) error
 	Close()
 
 	// Transaction
@@ -34,10 +35,13 @@ type Store interface {
 
 	// Database management
 	SetRegistry(reg *jsonapi.Registry)
-	Open(user string, pw string, host string, dbName string) error
 	SelectResourceTables(tx Tx) ([]string, error)
 	SelectRelationshipTables(tx Tx) ([]string, error)
 	SelectColumns(tx Tx, resType string) ([]map[string]string, error)
+	CreateResourceTable(tx Tx, typ jsonapi.Type) error
+	CreateRelationshipTable(tx Tx, rel jsonapi.Rel) error
+	AddColumn(tx Tx, resType string, attr jsonapi.Attr) error
+	DropColumn(tx Tx, resType, colName string) error
 	DrainDatabase(tx Tx) error
-	SyncDatabase(tx Tx, reg *jsonapi.Registry, verbose bool) error
+	SyncDatabase(tx Tx, reg *jsonapi.Registry, verbose, apply bool) error
 }

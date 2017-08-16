@@ -46,7 +46,7 @@ func syncCmd() cli.Command {
 			}
 
 			// Sync database
-			err = app.Store.SyncDatabase(nil, app.Registry, true)
+			err = app.Store.SyncDatabase(nil, app.Registry, true, false)
 			if err != nil {
 				return err
 			}
