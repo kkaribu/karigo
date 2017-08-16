@@ -244,13 +244,16 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx.AddToLog("URL parsed.")
 
 	// Parse body
-	body, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		panic(jsonapi.NewErrInternal())
-	}
-	ctx.In, err = jsonapi.Unmarshal(body, ctx.URL, ctx.App.Registry)
-	if err != nil {
-		panic(jsonapi.NewErrBadRequest())
+	var body []byte
+	if ctx.Method == "POST" || ctx.Method == "PATCH" {
+		body, err = ioutil.ReadAll(r.Body)
+		if err != nil {
+			panic(jsonapi.NewErrInternal())
+		}
+		ctx.In, err = jsonapi.Unmarshal(body, ctx.URL, ctx.App.Registry)
+		if err != nil {
+			panic(jsonapi.NewErrBadRequest())
+		}
 	}
 
 	// ctx.Out.Fields = ctx.URL.Params.Fields/
