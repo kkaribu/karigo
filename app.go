@@ -234,7 +234,11 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx.AddToLog("Context initialized.")
 
 	// Parse URL
-	ctx.URL, _ = jsonapi.ParseURL(a.Registry, r.URL)
+	url, err := jsonapi.ParseURL(a.Registry, r.URL)
+	if err != nil {
+		panic(err)
+	}
+	ctx.URL = url
 	ctx.Out.Meta["interpreted-url"] = ctx.URL.URLNormalized
 
 	ctx.AddToLog("URL parsed.")
