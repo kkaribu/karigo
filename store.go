@@ -41,6 +41,7 @@ type Store interface {
 	CreateResourceTable(tx Tx, typ jsonapi.Type) error
 	CreateRelationshipTable(tx Tx, rel jsonapi.Rel) error
 	AddColumn(tx Tx, resType string, attr jsonapi.Attr) error
+	DropTable(tx Tx, resType string) error
 	DropColumn(tx Tx, resType, colName string) error
 	DrainDatabase(tx Tx) error
 	SyncDatabase(tx Tx, reg *jsonapi.Registry, verbose, apply bool) error
