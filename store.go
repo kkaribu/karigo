@@ -21,11 +21,11 @@ type Store interface {
 	ResourceExists(tx Tx, resType, resID string) (bool, error)
 
 	// Relationship manipulation
-	SelectRelationship(tx Tx, resType string, resID, relName string) (string, error)
-	SelectRelationships(tx Tx, resType string, resID, relName string) ([]string, error)
-	UpdateRelationship(tx Tx, resType string, resID, relName string, relID string) error
-	UpdateRelationships(tx Tx, resType string, resID, relName string, relIDs []string) error
-	InsertRelationships(tx Tx, resType string, resID, relName string, relIDs []string) error
+	SelectRelationship(tx Tx, resType, resID, relName string) (string, error)
+	SelectRelationships(tx Tx, resType, resID, relName string) ([]string, error)
+	UpdateRelationship(tx Tx, resType, resID, relName, relID string) error
+	UpdateRelationships(tx Tx, resType, resID, relName string, relIDs []string) error
+	InsertRelationships(tx Tx, resType, resID, relName string, relIDs []string) error
 	DeleteRelationship(tx Tx, resType, resID, relID, relName string) error
 	DeleteRelationships(tx Tx, resType, resID, relName string, relIDs []string) error
 	DeleteAllRelationships(tx Tx, resType, resID, relName string) error
