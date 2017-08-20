@@ -44,25 +44,25 @@ func (a *App) executeKernel(ctx *Ctx) {
 
 			pageNumber := ctx.URL.Params.PageNumber
 
-			ctx.Out.Links["self"] = jsonapi.Link{HRef: ctx.URL.NormalizeURL()}
+			ctx.Out.Links["self"] = jsonapi.Link{HRef: ctx.URL.NormalizePath()}
 
 			ctx.URL.Params.PageNumber = 1
-			ctx.Out.Links["first"] = jsonapi.Link{HRef: ctx.URL.NormalizeURL()}
+			ctx.Out.Links["first"] = jsonapi.Link{HRef: ctx.URL.NormalizePath()}
 
 			ctx.URL.Params.PageNumber = pageNumber - 1
 			if ctx.URL.Params.PageNumber == 0 {
 				ctx.URL.Params.PageNumber = 1
 			}
-			ctx.Out.Links["prev"] = jsonapi.Link{HRef: ctx.URL.NormalizeURL()}
+			ctx.Out.Links["prev"] = jsonapi.Link{HRef: ctx.URL.NormalizePath()}
 
 			ctx.URL.Params.PageNumber = pageNumber + 1
 			if ctx.URL.Params.PageNumber > totalPages {
 				ctx.URL.Params.PageNumber = totalPages
 			}
-			ctx.Out.Links["next"] = jsonapi.Link{HRef: ctx.URL.NormalizeURL()}
+			ctx.Out.Links["next"] = jsonapi.Link{HRef: ctx.URL.NormalizePath()}
 
 			ctx.URL.Params.PageNumber = totalPages
-			ctx.Out.Links["last"] = jsonapi.Link{HRef: ctx.URL.NormalizeURL()}
+			ctx.Out.Links["last"] = jsonapi.Link{HRef: ctx.URL.NormalizePath()}
 
 			ctx.URL.Params.PageNumber = pageNumber
 		}
