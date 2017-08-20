@@ -239,7 +239,6 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	ctx.URL = url
-	ctx.Out.Meta["interpreted-url"] = ctx.URL.Path
 
 	ctx.AddToLog("URL parsed.")
 
