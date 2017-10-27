@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/kkaribu/jsonapi"
 	"github.com/kkaribu/tchek"
 )
 
@@ -88,4 +89,15 @@ type InvalidType1 struct {
 
 	Rel1 []string `json:"rel1" api:"rel,validtype1,rel99"`
 	Rel2 []string `json:"rel2" api:"rel,validtype99,rel1"`
+}
+
+// NewMockApp ...
+func NewMockApp() *App {
+	app := NewApp(nil)
+
+	app.Registry = jsonapi.NewMockRegistry()
+
+	app.Get("/mocktypes3", KernelGetCollection, GatePublic)
+
+	return app
 }
