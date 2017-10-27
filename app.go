@@ -234,6 +234,14 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx.AddToLog("Context initialized.")
 
 	// Parse URL
+	r.URL.Host = r.Host
+	if r.TLS != nil {
+		r.URL.Scheme = "https"
+	} else {
+		r.URL.Scheme = "http"
+	}
+	// The host and scheme are set there because they might not be set by
+	// default if the request was made with a relative path.
 	url, err := jsonapi.ParseURL(a.Registry, r.URL)
 	if err != nil {
 		panic(err)
