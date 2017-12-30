@@ -38,7 +38,12 @@ func syncCmd() cli.Command {
 		Name:    "sync",
 		Aliases: []string{},
 		Usage:   "update the database's schema to match the app",
-		Flags:   []cli.Flag{},
+		Flags: []cli.Flag{
+			cli.BoolFlag{
+				Name:  "apply",
+				Usage: "apply the updates",
+			},
+		},
 		Action: func(c *cli.Context) error {
 			app, err := PrepareCmd(c)
 			if err != nil {
@@ -46,7 +51,7 @@ func syncCmd() cli.Command {
 			}
 
 			// Sync database
-			err = app.Store.SyncDatabase(nil, app.Registry, true, false)
+			err = app.Store.SyncDatabase(nil, app.Registry, true, c.Bool("apply"))
 			if err != nil {
 				return err
 			}
