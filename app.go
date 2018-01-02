@@ -60,7 +60,8 @@ func (a *App) ReadConfig(data []byte) error {
 		Port  uint16
 		Debug bool
 		Store struct {
-			URL string
+			Driver string
+			URL    string
 		}
 	}{}
 
@@ -79,7 +80,7 @@ func (a *App) ReadConfig(data []byte) error {
 
 	// Connect to database
 	a.Info("Connecting to database...")
-	err = a.Store.Open(config.Store.URL)
+	err = a.Store.Open(config.Store.Driver, config.Store.URL)
 	// defer app.Store.Close() // TODO Where do we close it?
 	if err != nil {
 		return err

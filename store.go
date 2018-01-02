@@ -5,7 +5,7 @@ import "github.com/kkaribu/jsonapi"
 // Store ...
 type Store interface {
 	// Connection management
-	Open(url string) error
+	Open(driver, url string) error
 	Close()
 
 	// Transaction
