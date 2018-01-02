@@ -60,11 +60,7 @@ func (a *App) ReadConfig(data []byte) error {
 		Port  uint16
 		Debug bool
 		Store struct {
-			Name     string
-			Address  string
-			Port     uint16
-			User     string
-			Password string
+			URL string
 		}
 	}{}
 
@@ -73,20 +69,8 @@ func (a *App) ReadConfig(data []byte) error {
 		return err
 	}
 
-	if config.Name == "" {
-		return fmt.Errorf("karigo: missing app name in configuration file")
-	}
-
-	if config.Store.Name == "" {
-		return fmt.Errorf("karigo: missing store name in configuration file")
-	}
-
-	if config.Store.Address == "" {
-		return fmt.Errorf("karigo: missing store address in configuration file")
-	}
-
-	if config.Store.User == "" {
-		return fmt.Errorf("karigo: missing store user in configuration file")
+	if config.Store.URL == "" {
+		return fmt.Errorf("karigo: missing store url in configuration file")
 	}
 
 	a.Name = config.Name
@@ -95,7 +79,7 @@ func (a *App) ReadConfig(data []byte) error {
 
 	// Connect to database
 	a.Info("Connecting to database...")
-	err = a.Store.Open(config.Store.User, config.Store.Password, config.Store.Address, a.Name)
+	err = a.Store.Open(config.Store.URL)
 	// defer app.Store.Close() // TODO Where do we close it?
 	if err != nil {
 		return err
