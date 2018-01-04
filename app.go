@@ -1,6 +1,7 @@
 package karigo
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -35,11 +36,12 @@ func NewApp(store Store) *App {
 type App struct {
 	sync.Mutex
 
-	Name  string   `json:"name"`
-	Port  uint16   `json:"port"`
-	Debug bool     `json:"debug"`
-	Store Store    `json:"-"`
-	CLI   *cli.App `json:"-"`
+	Name     string   `json:"name"`
+	Port     uint16   `json:"port"`
+	Debug    bool     `json:"debug"`
+	Minimize bool     `json:"minimize"`
+	Store    Store    `json:"-"`
+	CLI      *cli.App `json:"-"`
 
 	*jsonapi.Registry
 
@@ -56,10 +58,11 @@ func (a *App) Info(msg string) {
 // ReadConfig ...
 func (a *App) ReadConfig(data []byte) error {
 	config := struct {
-		Name  string
-		Port  uint16
-		Debug bool
-		Store struct {
+		Name     string
+		Port     uint16
+		Debug    bool
+		Minimize bool
+		Store    struct {
 			Driver string
 			URL    string
 		}
@@ -77,6 +80,7 @@ func (a *App) ReadConfig(data []byte) error {
 	a.Name = config.Name
 	a.Port = config.Port
 	a.Debug = config.Debug
+	a.Minimize = config.Minimize
 
 	// Connect to database
 	a.Info("Connecting to database...")
@@ -288,6 +292,14 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	body, err = jsonapi.Marshal(ctx.Out, ctx.URL)
 	if err != nil {
 		panic(jsonapi.NewErrInternal())
+	}
+	if a.Minimize {
+		buf := &bytes.Buffer{}
+		err = json.Indent(buf, body, "", "\t")
+		if err != nil {
+			panic(err)
+		}
+		body = buf.Bytes()
 	}
 	ctx.AddToLog("Document checked.")
 
