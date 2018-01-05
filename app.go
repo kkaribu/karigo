@@ -183,28 +183,29 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			ctx.AddToLog("Panic!")
 
 			var jaerr jsonapi.Error
-			switch err := rec.(type) {
+			switch e := rec.(type) {
 			case string:
-				ctx.AddToLog(fmt.Sprintf("String error: %s\n", err))
+				ctx.AddToLog(fmt.Sprintf("String error: %s\n", e))
 				jaerr = jsonapi.NewErrInternal()
 			case jsonapi.Error:
-				ctx.AddToLog(fmt.Sprintf("JSONAPI error: %s\n", err.Error()))
-				jaerr = err
+				ctx.AddToLog(fmt.Sprintf("JSONAPI error: %s\n", e.Error()))
+				jaerr = e
 			case error:
-				ctx.AddToLog(fmt.Sprintf("Error: %s\n", err))
+				ctx.AddToLog(fmt.Sprintf("Error: %s\n", e))
 				jaerr = jsonapi.NewErrInternal()
 			}
 
-			w.WriteHeader(jaerr.Status)
+			ctx.Out = jsonapi.NewDocument()
+			ctx.Out.Data = []jsonapi.Error{jaerr}
 
 			var body []byte
-			// var err error
+			var err error
+			body, err = jsonapi.Marshal(ctx.Out, ctx.URL)
+			if err != nil {
+				body = []byte(`{"errors":{"title":"Epic Fail"}}`)
+			}
 
-			// body, err = jsonapi.Marshal(jaerr, &jsonapi.URL{}, nil)
-			// if err != nil {
-			body = []byte("{\"errors\":{\"title\":\"Epic Fail\"}}")
-			// }
-
+			w.WriteHeader(jaerr.Status)
 			_, _ = w.Write(body)
 
 			fmt.Println()
