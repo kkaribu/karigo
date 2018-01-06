@@ -63,8 +63,12 @@ func (a *App) ReadConfig(data []byte) error {
 		Debug    bool
 		Minimize bool
 		Store    struct {
-			Driver string
-			URL    string
+			Driver   string
+			Host     string
+			Database string
+			User     string
+			Password string
+			Options  map[string]string
 		}
 	}{}
 
@@ -73,8 +77,12 @@ func (a *App) ReadConfig(data []byte) error {
 		return err
 	}
 
-	if config.Store.URL == "" {
-		return fmt.Errorf("karigo: missing store url in configuration file")
+	if config.Store.Driver == "" {
+		return fmt.Errorf("karigo: missing store driver in configuration file")
+	}
+
+	if config.Store.Host == "" {
+		return fmt.Errorf("karigo: missing store host in configuration file")
 	}
 
 	a.Name = config.Name
@@ -84,7 +92,14 @@ func (a *App) ReadConfig(data []byte) error {
 
 	// Connect to database
 	a.Info("Connecting to database...")
-	err = a.Store.Open(config.Store.Driver, config.Store.URL)
+	err = a.Store.Open(
+		config.Store.Driver,
+		config.Store.Host,
+		config.Store.Database,
+		config.Store.User,
+		config.Store.Password,
+		config.Store.Options,
+	)
 	// defer app.Store.Close() // TODO Where do we close it?
 	if err != nil {
 		return err
