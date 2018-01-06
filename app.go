@@ -36,12 +36,9 @@ func NewApp(store Store) *App {
 type App struct {
 	sync.Mutex
 
-	Name     string   `json:"name"`
-	Port     uint16   `json:"port"`
-	Debug    bool     `json:"debug"`
-	Minimize bool     `json:"minimize"`
-	Store    Store    `json:"-"`
-	CLI      *cli.App `json:"-"`
+	Config Config
+	Store  Store    `json:"-"`
+	CLI    *cli.App `json:"-"`
 
 	*jsonapi.Registry
 
@@ -57,20 +54,7 @@ func (a *App) Info(msg string) {
 
 // ReadConfig ...
 func (a *App) ReadConfig(data []byte) error {
-	config := struct {
-		Name     string
-		Port     uint16
-		Debug    bool
-		Minimize bool
-		Store    struct {
-			Driver   string
-			Host     string
-			Database string
-			User     string
-			Password string
-			Options  map[string]string
-		}
-	}{}
+	config := Config{}
 
 	err := json.Unmarshal(data, &config)
 	if err != nil {
@@ -85,10 +69,7 @@ func (a *App) ReadConfig(data []byte) error {
 		return fmt.Errorf("karigo: missing store host in configuration file")
 	}
 
-	a.Name = config.Name
-	a.Port = config.Port
-	a.Debug = config.Debug
-	a.Minimize = config.Minimize
+	a.Config = config
 
 	// Connect to database
 	a.Info("Connecting to database...")
@@ -129,7 +110,7 @@ func (a *App) Merge(na *App) {
 
 // RunCLI ...
 func (a *App) RunCLI() {
-	a.CLI.Name = a.Name
+	a.CLI.Name = a.Config.Name
 
 	a.CLI.Metadata = map[string]interface{}{}
 	a.CLI.Metadata["app"] = a
@@ -173,7 +154,7 @@ func (a *App) Run() error {
 
 	handler := c.Handler(a)
 
-	http.ListenAndServe(fmt.Sprintf(":%d", a.Port), handler)
+	http.ListenAndServe(fmt.Sprintf(":%d", a.Config.Port), handler)
 
 	return nil
 }
@@ -227,7 +208,7 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Print log
-		if a.Debug {
+		if a.Config.Debug {
 			ctx.SaveLog()
 		}
 	}()
@@ -309,7 +290,7 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(jsonapi.NewErrInternal())
 	}
-	if a.Minimize {
+	if a.Config.Minimize {
 		buf := &bytes.Buffer{}
 		err = json.Indent(buf, body, "", "\t")
 		if err != nil {
