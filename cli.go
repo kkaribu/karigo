@@ -137,6 +137,21 @@ func PrepareCmd(c *cli.Context) (*App, error) {
 		return app, errs[0]
 	}
 
+	// Connect to database
+	app.Info("Connecting to database...")
+	err = app.Store.Open(
+		app.Config.Store.Driver,
+		app.Config.Store.Host,
+		app.Config.Store.Database,
+		app.Config.Store.User,
+		app.Config.Store.Password,
+		app.Config.Store.Options,
+	)
+	// defer app.Store.Close() // TODO Where do we close it?
+	if err != nil {
+		return app, err
+	}
+
 	return app, nil
 }
 
