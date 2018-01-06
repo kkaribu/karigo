@@ -1,7 +1,6 @@
 package karigo
 
 import (
-	"fmt"
 	"io/ioutil"
 
 	"gopkg.in/urfave/cli.v1"
@@ -20,7 +19,7 @@ func deleteCmd() cli.Command {
 			}
 
 			// Drain database
-			fmt.Println("Draining database...")
+			app.Info("Draining database...")
 			err = app.Store.DrainDatabase(nil)
 			if err != nil {
 				return err
@@ -76,7 +75,7 @@ func schemaCmd() cli.Command {
 			}
 
 			// Info
-			fmt.Println(app.Schema())
+			app.Info("\n" + app.Schema())
 
 			TerminateCmd()
 
@@ -99,13 +98,7 @@ func runCmd() cli.Command {
 
 			app.RunHook("before-run")
 
-			if app.Config.Debug {
-				fmt.Println("Debug: on")
-			} else {
-				fmt.Println("Debug: off")
-			}
-			fmt.Printf("Now listening on %d...\n", app.Config.Port)
-			fmt.Println()
+			app.Info("Now listening on %d...\n\n", app.Config.Port)
 
 			app.Run()
 
@@ -131,6 +124,12 @@ func PrepareCmd(c *cli.Context) (*App, error) {
 		return app, err
 	}
 
+	if app.Config.Debug {
+		app.Info("Debug is ON.")
+	} else {
+		app.Info("Debug is OFF.")
+	}
+
 	// Check app
 	errs := app.Check()
 	if len(errs) > 0 {
@@ -151,11 +150,12 @@ func PrepareCmd(c *cli.Context) (*App, error) {
 	if err != nil {
 		return app, err
 	}
+	app.Info("URL: %s", app.Store.URL())
+	app.Info("Connection to database established.")
 
 	return app, nil
 }
 
 // TerminateCmd ...
 func TerminateCmd() {
-	fmt.Println()
 }

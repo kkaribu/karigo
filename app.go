@@ -48,8 +48,8 @@ type App struct {
 }
 
 // Info ...
-func (a *App) Info(msg string) {
-	log.Printf("%s", msg)
+func (a *App) Info(msg string, args ...interface{}) {
+	log.Printf(msg, args...)
 }
 
 // ReadConfig ...
