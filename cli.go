@@ -25,7 +25,7 @@ func deleteCmd() cli.Command {
 				return err
 			}
 
-			TerminateCmd()
+			TerminateCmd(app)
 
 			return nil
 		},
@@ -55,7 +55,7 @@ func syncCmd() cli.Command {
 				return err
 			}
 
-			TerminateCmd()
+			TerminateCmd(app)
 
 			return nil
 		},
@@ -77,7 +77,7 @@ func schemaCmd() cli.Command {
 			// Info
 			app.Info("\n" + app.Schema())
 
-			TerminateCmd()
+			TerminateCmd(app)
 
 			return nil
 		},
@@ -102,7 +102,7 @@ func runCmd() cli.Command {
 
 			app.Run()
 
-			TerminateCmd()
+			TerminateCmd(app)
 
 			return nil
 		},
@@ -146,7 +146,6 @@ func PrepareCmd(c *cli.Context) (*App, error) {
 		app.Config.Store.Password,
 		app.Config.Store.Options,
 	)
-	// defer app.Store.Close() // TODO Where do we close it?
 	if err != nil {
 		return app, err
 	}
@@ -157,5 +156,9 @@ func PrepareCmd(c *cli.Context) (*App, error) {
 }
 
 // TerminateCmd ...
-func TerminateCmd() {
+func TerminateCmd(app *App) error {
+	app.Info("Closing database connection...")
+	app.Store.Close()
+	app.Info("Connection closed.")
+	return nil
 }
