@@ -52,6 +52,13 @@ func (a *App) Info(msg string, args ...interface{}) {
 	log.Printf(msg, args...)
 }
 
+// Debug ...
+func (a *App) Debug(msg string, args ...interface{}) {
+	if a.Config.Debug {
+		log.Printf(msg, args...)
+	}
+}
+
 // ReadConfig ...
 func (a *App) ReadConfig(data []byte) error {
 	config := Config{}
