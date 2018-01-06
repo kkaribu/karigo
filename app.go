@@ -118,6 +118,8 @@ func (a *App) RunCLI() {
 	if err != nil {
 		fmt.Printf("%s\n", err)
 	}
+
+	fmt.Println()
 }
 
 // AddHook ...
