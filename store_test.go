@@ -5,6 +5,7 @@ import "github.com/kkaribu/jsonapi"
 // MockStore ...
 type MockStore struct {
 	OpenFunc  func(driver, host, db, user, pw string, opts map[string]string) error
+	URLFunc   func() string
 	CloseFunc func()
 
 	BeginFunc func() (Tx, error)
@@ -48,6 +49,13 @@ func (m MockStore) Open(driver, host, db, user, pw string, opts map[string]strin
 		panic("function Open in MockStore not implemented")
 	}
 	return m.OpenFunc(driver, host, db, user, pw, opts)
+}
+
+func (m MockStore) URL() string {
+	if m.OpenFunc == nil {
+		panic("function URL in MockStore not implemented")
+	}
+	return m.URLFunc()
 }
 
 func (m MockStore) Close() {
