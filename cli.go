@@ -146,10 +146,10 @@ func PrepareCmd(c *cli.Context) (*App, error) {
 		app.Config.Store.Password,
 		app.Config.Store.Options,
 	)
+	app.Info("URL: %s", app.Store.URL())
 	if err != nil {
 		return app, err
 	}
-	app.Info("URL: %s", app.Store.URL())
 	app.Info("Connection to database established.")
 
 	return app, nil
