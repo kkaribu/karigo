@@ -4,6 +4,7 @@ import (
 	"sync"
 )
 
+// NewQueue ...
 func NewQueue() *Queue {
 	queue := &Queue{}
 
@@ -12,9 +13,10 @@ func NewQueue() *Queue {
 	return queue
 }
 
+// Queue ...
 type Queue struct {
 	actions  []Action
-	position int8
+	position uint8
 	length   uint8
 	lock     sync.Mutex
 
@@ -22,24 +24,26 @@ type Queue struct {
 	lastTx []*Tx
 }
 
+// Run ...
 func (q *Queue) Run() {
 	for {
 		q.lock.Lock()
 
-		if q.actions.length > 0 {
-			q.actions[position].Execute(ctx, sw)
+		if q.length > 0 {
+			// q.actions[q.position].Execute(ctx, sw)
 		}
 
 		q.lock.Unlock()
 	}
 }
 
+// Execute ...
 func (q *Queue) Execute(a Action) {
 	q.lock.Lock()
 
 	pos := q.position + q.length
 
-	queue.actions[pos]
+	q.actions[pos] = a
 
 	q.lock.Unlock()
 
