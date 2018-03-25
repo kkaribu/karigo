@@ -40,13 +40,13 @@ func (t *Switch) NarrowDown(let string, keep []string) error {
 }
 
 // GetCol ...
-func (t *Switch) GetCol(typ string, fields []string, pagination [2]int, filters map[string][]string, sort []string) error {
-	return nil
+func (t *Switch) GetCol(typ string, fields []string, pagination [2]int, filters map[string][]string, sort []string) (jsonapi.Collection, error) {
+	return nil, nil
 }
 
-// GetRes ...
-func (t *Switch) GetRes(typ, id string, fields []string) error {
-	return nil
+// GetRes ...sort
+func (t *Switch) GetRes(typ, id string, fields []string) (jsonapi.Resource, error) {
+	return nil, nil
 }
 
 // Insert ...
