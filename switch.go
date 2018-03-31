@@ -10,21 +10,22 @@ import (
 // Switch ...
 type Switch struct {
 	engine *Queue
-	// locks  map[string]Lock
+	locksR map[string]Lock
+	locksW map[string]Lock
 }
 
-// Reserve ...
-func (t *Switch) Reserve(key string) error {
+// ReserveR ...
+func (t *Switch) ReserveR(key string) error {
 	return nil
 }
 
-// ReserveRO ...
-func (t *Switch) ReserveRO(key string) error {
+// ReserveW ...
+func (t *Switch) ReserveW(key string) error {
 	return nil
 }
 
 // Ready ...
-// You cannot reserver anything else. You may now read and update.
+// You cannot reserve anything else. You may now read and update.
 func (t *Switch) Ready() {
 }
 
@@ -32,7 +33,7 @@ func (t *Switch) Ready() {
 func (t *Switch) NarrowDown(let string, keep []string) error {
 	for _, k := range keep {
 		if !strings.HasPrefix(k, let) {
-			return fmt.Errorf("engine: %s isn't an inner lock of %s", k, let)
+			return fmt.Errorf("karigo: %s isn't an inner lock of %s", k, let)
 		}
 	}
 
@@ -41,6 +42,14 @@ func (t *Switch) NarrowDown(let string, keep []string) error {
 
 // GetCol ...
 func (t *Switch) GetCol(typ string, fields []string, pagination [2]int, filters map[string][]string, sort []string) (jsonapi.Collection, error) {
+	// var col jsonapi.Collection
+	//
+	// if nf != nil {
+	// 	t.NarrowDown("typ", nf(col))
+	// } else {
+	// 	t.Clear(typ)
+	// }
+
 	return nil, nil
 }
 

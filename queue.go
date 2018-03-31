@@ -20,7 +20,6 @@ type Queue struct {
 	length   uint8
 	lock     sync.Mutex
 
-	locks  map[string]uint
 	lastTx []*Tx
 }
 
