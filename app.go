@@ -108,10 +108,10 @@ func (a *App) RunCLI() {
 	a.CLI.Metadata["app"] = a
 
 	a.AddCmd(
-		deleteCmd(),
+		drainCmd(),
 		runCmd(),
 		schemaCmd(),
-		syncCmd(),
+		checkCmd(),
 	)
 
 	err := a.CLI.Run(os.Args)

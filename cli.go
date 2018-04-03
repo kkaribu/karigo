@@ -6,11 +6,11 @@ import (
 	"gopkg.in/urfave/cli.v1"
 )
 
-func deleteCmd() cli.Command {
+func drainCmd() cli.Command {
 	return cli.Command{
-		Name:    "delete",
+		Name:    "drain",
 		Aliases: []string{},
-		Usage:   "delete instance",
+		Usage:   "Empties the store (including the tables if necessary), but keeps the store itself.",
 		Flags:   []cli.Flag{},
 		Action: func(c *cli.Context) error {
 			app, err := PrepareCmd(c)
@@ -18,8 +18,8 @@ func deleteCmd() cli.Command {
 				return err
 			}
 
-			// Drain database
-			app.Info("Draining database...")
+			// Drain store
+			app.Info("Draining store...")
 			err = app.Store.DrainDatabase(nil)
 			if err != nil {
 				return err
@@ -32,11 +32,11 @@ func deleteCmd() cli.Command {
 	}
 }
 
-func syncCmd() cli.Command {
+func checkCmd() cli.Command {
 	return cli.Command{
-		Name:    "sync",
+		Name:    "check",
 		Aliases: []string{},
-		Usage:   "update the database's schema to match the app",
+		Usage:   "Displays the differences between the app schema and the store schema.",
 		Flags: []cli.Flag{
 			cli.BoolFlag{
 				Name:  "apply",
@@ -66,7 +66,7 @@ func schemaCmd() cli.Command {
 	return cli.Command{
 		Name:    "schema",
 		Aliases: []string{},
-		Usage:   "show the app's schema",
+		Usage:   "Displays the app schema.",
 		Flags:   []cli.Flag{},
 		Action: func(c *cli.Context) error {
 			app, err := PrepareCmd(c)
@@ -88,7 +88,7 @@ func runCmd() cli.Command {
 	return cli.Command{
 		Name:    "run",
 		Aliases: []string{},
-		Usage:   "run instance",
+		Usage:   "Instantiates the app and starts serving requests.",
 		Flags:   []cli.Flag{},
 		Action: func(c *cli.Context) error {
 			app, err := PrepareCmd(c)
