@@ -11,7 +11,13 @@ func drainCmd() cli.Command {
 		Name:    "drain",
 		Aliases: []string{},
 		Usage:   "Empties the store (including the tables if necessary), but keeps the store itself.",
-		Flags:   []cli.Flag{},
+		Flags: []cli.Flag{
+			cli.StringFlag{
+				Name:  "config",
+				Usage: "path to config file",
+				Value: "config.json",
+			},
+		},
 		Action: func(c *cli.Context) error {
 			app, err := PrepareCmd(c)
 			if err != nil {
@@ -43,6 +49,11 @@ func checkCmd() cli.Command {
 				Name:  "apply",
 				Usage: "apply the updates",
 			},
+			cli.StringFlag{
+				Name:  "config",
+				Usage: "path to config file",
+				Value: "config.json",
+			},
 		},
 		Action: func(c *cli.Context) error {
 			app, err := PrepareCmd(c)
@@ -70,7 +81,13 @@ func schemaCmd() cli.Command {
 		Name:    "schema",
 		Aliases: []string{},
 		Usage:   "Displays the app schema.",
-		Flags:   []cli.Flag{},
+		Flags: []cli.Flag{
+			cli.StringFlag{
+				Name:  "config",
+				Usage: "path to config file",
+				Value: "config.json",
+			},
+		},
 		Action: func(c *cli.Context) error {
 			app, err := PrepareCmd(c)
 			if err != nil {
@@ -92,7 +109,13 @@ func runCmd() cli.Command {
 		Name:    "run",
 		Aliases: []string{},
 		Usage:   "Instantiates the app and starts serving requests.",
-		Flags:   []cli.Flag{},
+		Flags: []cli.Flag{
+			cli.StringFlag{
+				Name:  "config",
+				Usage: "path to config file",
+				Value: "config.json",
+			},
+		},
 		Action: func(c *cli.Context) error {
 			app, err := PrepareCmd(c)
 			if err != nil {
@@ -117,7 +140,7 @@ func PrepareCmd(c *cli.Context) (*App, error) {
 	app := c.App.Metadata["app"].(*App)
 
 	// Configuration
-	data, err := ioutil.ReadFile("config.json")
+	data, err := ioutil.ReadFile(c.String("config"))
 	if err != nil {
 		return app, err
 	}
