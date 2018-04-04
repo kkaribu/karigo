@@ -52,7 +52,7 @@ func (m MockStore) Open(driver, host, db, user, pw string, opts map[string]strin
 }
 
 func (m MockStore) URL() string {
-	if m.OpenFunc == nil {
+	if m.URLFunc == nil {
 		panic("function URL in MockStore not implemented")
 	}
 	return m.URLFunc()
