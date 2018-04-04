@@ -24,6 +24,7 @@ func drainCmd() cli.Command {
 			if err != nil {
 				return err
 			}
+			app.Info("Store is now drained.")
 
 			TerminateCmd(app)
 
@@ -49,11 +50,13 @@ func checkCmd() cli.Command {
 				return err
 			}
 
-			// Sync database
+			// Sync store
+			app.Info("Syncing store...")
 			err = app.Store.SyncDatabase(nil, app.Registry, true, c.Bool("apply"))
 			if err != nil {
 				return err
 			}
+			app.Info("Store schema is synced.")
 
 			TerminateCmd(app)
 
