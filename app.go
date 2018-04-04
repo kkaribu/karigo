@@ -28,6 +28,8 @@ func NewApp(store Store) *App {
 		Gates:   map[string][]Gate{},
 	}
 
+	app.Config.Store.Options = map[string]string{}
+
 	return app
 }
 
