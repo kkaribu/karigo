@@ -51,7 +51,9 @@ type App struct {
 
 // Info ...
 func (a *App) Info(msg string, args ...interface{}) {
-	log.Printf(msg, args...)
+	if a.Config.Info {
+		log.Printf(msg, args...)
+	}
 }
 
 // Debug ...
