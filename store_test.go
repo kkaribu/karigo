@@ -66,7 +66,14 @@ func (m MockStore) Close() {
 
 func (m MockStore) Begin() (Tx, error) {
 	if m.BeginFunc == nil {
-		return MockTx{}, nil
+		return MockTx{
+			CommitFunc: func() error {
+				return nil
+			},
+			RollbackFunc: func() error {
+				return nil
+			},
+		}, nil
 	}
 	return m.BeginFunc()
 }

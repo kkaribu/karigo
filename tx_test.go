@@ -7,14 +7,14 @@ type MockTx struct {
 
 func (m MockTx) Commit() error {
 	if m.CommitFunc == nil {
-		return nil
+		panic("function Commit in MockTx not implemented")
 	}
 	return m.CommitFunc()
 }
 
 func (m MockTx) Rollback() error {
 	if m.RollbackFunc == nil {
-		return nil
+		panic("function Rollback in MockTx not implemented")
 	}
 	return m.RollbackFunc()
 }
