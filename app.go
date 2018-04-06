@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"sync"
 
 	"github.com/kkaribu/jsonapi"
@@ -18,8 +19,9 @@ import (
 // NewApp creates and returns an App object.
 func NewApp(store Store) *App {
 	app := &App{
-		Store: store,
-		CLI:   cli.NewApp(),
+		Store:  store,
+		CLI:    cli.NewApp(),
+		Server: http.Server{},
 
 		Registry: jsonapi.NewRegistry(),
 
@@ -39,8 +41,9 @@ type App struct {
 	sync.Mutex
 
 	Config Config
-	Store  Store    `json:"-"`
-	CLI    *cli.App `json:"-"`
+	Store  Store       `json:"-"`
+	CLI    *cli.App    `json:"-"`
+	Server http.Server `json:"-"`
 
 	*jsonapi.Registry
 
@@ -150,9 +153,13 @@ func (a *App) Run() error {
 		AllowedMethods: []string{"GET", "POST", "PATCH", "DELETE"},
 	})
 
-	handler := c.Handler(a)
+	a.Server.Addr = strconv.FormatUint(uint64(a.Config.Port), 10)
+	a.Server.Handler = c.Handler(a)
 
-	http.ListenAndServe(fmt.Sprintf(":%d", a.Config.Port), handler)
+	err := a.Server.ListenAndServe()
+	if err != nil {
+		panic(err)
+	}
 
 	return nil
 }
