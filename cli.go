@@ -2,6 +2,7 @@ package karigo
 
 import (
 	"io/ioutil"
+	"net/http"
 
 	"gopkg.in/urfave/cli.v1"
 )
@@ -126,7 +127,12 @@ func runCmd() cli.Command {
 
 			app.Info("Now listening on %d...\n\n", app.Config.Port)
 
-			app.Run()
+			err = app.Run()
+			if err != nil {
+				if err != http.ErrServerClosed {
+					return err
+				}
+			}
 
 			TerminateCmd(app)
 

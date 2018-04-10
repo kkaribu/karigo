@@ -157,11 +157,8 @@ func (a *App) Run() error {
 	a.Server.Handler = c.Handler(a)
 
 	err := a.Server.ListenAndServe()
-	if err != nil {
-		panic(err)
-	}
 
-	return nil
+	return err
 }
 
 // Shutdown ...
