@@ -153,7 +153,7 @@ func (a *App) Run() error {
 		AllowedMethods: []string{"GET", "POST", "PATCH", "DELETE"},
 	})
 
-	a.Server.Addr = strconv.FormatUint(uint64(a.Config.Port), 10)
+	a.Server.Addr = ":" + strconv.FormatUint(uint64(a.Config.Port), 10)
 	a.Server.Handler = c.Handler(a)
 
 	err := a.Server.ListenAndServe()
