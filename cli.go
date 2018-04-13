@@ -123,8 +123,6 @@ func runCmd() cli.Command {
 				return err
 			}
 
-			app.RunHook("before-run")
-
 			app.Info("Now listening on %d...\n\n", app.Config.Port)
 
 			err = app.Run()
