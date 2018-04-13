@@ -7,39 +7,6 @@ import (
 	"gopkg.in/urfave/cli.v1"
 )
 
-func drainCmd() cli.Command {
-	return cli.Command{
-		Name:    "drain",
-		Aliases: []string{},
-		Usage:   "Empties the store (including the tables if necessary), but keeps the store itself.",
-		Flags: []cli.Flag{
-			cli.StringFlag{
-				Name:  "config",
-				Usage: "path to config file",
-				Value: "config.json",
-			},
-		},
-		Action: func(c *cli.Context) error {
-			app, err := PrepareCmd(c)
-			if err != nil {
-				return err
-			}
-
-			// Drain store
-			app.Info("Draining store...")
-			err = app.Store.DrainDatabase(nil)
-			if err != nil {
-				return err
-			}
-			app.Info("Store is now drained.")
-
-			TerminateCmd(app)
-
-			return nil
-		},
-	}
-}
-
 func checkCmd() cli.Command {
 	return cli.Command{
 		Name:    "check",
@@ -69,6 +36,39 @@ func checkCmd() cli.Command {
 				return err
 			}
 			app.Info("Store schema is synced.")
+
+			TerminateCmd(app)
+
+			return nil
+		},
+	}
+}
+
+func drainCmd() cli.Command {
+	return cli.Command{
+		Name:    "drain",
+		Aliases: []string{},
+		Usage:   "Empties the store (including the tables if necessary), but keeps the store itself.",
+		Flags: []cli.Flag{
+			cli.StringFlag{
+				Name:  "config",
+				Usage: "path to config file",
+				Value: "config.json",
+			},
+		},
+		Action: func(c *cli.Context) error {
+			app, err := PrepareCmd(c)
+			if err != nil {
+				return err
+			}
+
+			// Drain store
+			app.Info("Draining store...")
+			err = app.Store.DrainDatabase(nil)
+			if err != nil {
+				return err
+			}
+			app.Info("Store is now drained.")
 
 			TerminateCmd(app)
 
