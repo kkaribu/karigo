@@ -48,6 +48,14 @@ func TestInstanceDistributor(t *testing.T) {
 
 }
 
+func TestInfo(t *testing.T) {
+	app := NewApp(nil)
+
+	app.Info("message")
+
+	app.Info("message %s", "with string argument")
+}
+
 type ValidType1 struct {
 	ID string `json:"id" api:"validtype1"`
 
