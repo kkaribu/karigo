@@ -25,7 +25,6 @@ func NewApp(store Store) *App {
 
 		Registry: jsonapi.NewRegistry(),
 
-		Hooks:   map[string]func(){},
 		Kernels: map[string]Kernel{},
 		Gates:   map[string][]Gate{},
 	}
@@ -47,7 +46,6 @@ type App struct {
 
 	*jsonapi.Registry
 
-	Hooks   map[string]func() `json:"-"`
 	Kernels map[string]Kernel `json:"-"`
 	Gates   map[string][]Gate `json:"-"`
 }
@@ -94,10 +92,6 @@ func (a *App) Merge(na *App) {
 		a.Types[n] = t
 	}
 
-	for n, f := range na.Hooks {
-		a.Hooks[n] = f
-	}
-
 	for n, k := range na.Kernels {
 		a.Kernels[n] = k
 	}
@@ -127,18 +121,6 @@ func (a *App) RunCLI() {
 	}
 
 	fmt.Println()
-}
-
-// AddHook ...
-func (a *App) AddHook(pos string, f func()) {
-	a.Hooks[pos] = f
-}
-
-// RunHook ...
-func (a *App) RunHook(pos string) {
-	if f, ok := a.Hooks[pos]; ok {
-		f()
-	}
 }
 
 // AddCmd ...
