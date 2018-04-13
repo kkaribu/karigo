@@ -6,6 +6,7 @@ type Config struct {
 	Port     uint16
 	Debug    bool
 	Info     bool
+	Error    bool
 	Minimize bool
 	Store    struct {
 		Driver   string

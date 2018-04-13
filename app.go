@@ -28,6 +28,10 @@ func NewApp(store Store) *App {
 		Hooks:   map[string]func(){},
 		Kernels: map[string]Kernel{},
 		Gates:   map[string][]Gate{},
+
+		loggerInfo:  log.New(os.Stdout, "[INF] ", log.Ldate|log.Lmicroseconds|log.LUTC),
+		loggerDebug: log.New(os.Stdout, "[DBG] ", log.Ldate|log.Lmicroseconds|log.LUTC),
+		loggerError: log.New(os.Stderr, "[ERR] ", log.Ldate|log.Lmicroseconds|log.LUTC),
 	}
 
 	app.Config.Store.Options = map[string]string{}
@@ -50,20 +54,32 @@ type App struct {
 	Hooks   map[string]func() `json:"-"`
 	Kernels map[string]Kernel `json:"-"`
 	Gates   map[string][]Gate `json:"-"`
+
+	// Loggers
+	loggerInfo  *log.Logger
+	loggerDebug *log.Logger
+	loggerError *log.Logger
 }
 
 // Info ...
 func (a *App) Info(msg string, args ...interface{}) {
 	if a.Config.Info {
-		log.Printf(msg, args...)
+		a.loggerInfo.Printf(msg, args...)
 	}
 }
 
 // Debug ...
 func (a *App) Debug(msg string, args ...interface{}) {
 	if a.Config.Debug {
-		log.Printf(msg, args...)
+		a.loggerDebug.Printf(msg, args...)
 	}
+}
+
+// Error ...
+func (a *App) Error(msg string, args ...interface{}) {
+	// if a.Config.Error {
+	a.loggerError.Printf(msg, args...)
+	// }
 }
 
 // ReadConfig ...
