@@ -3,7 +3,7 @@ module github.com/kkaribu/karigo
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dchest/uniuri v0.0.0-20160212164326-8902c56451e9
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/dgrijalva/jwt-go v2.7.0+incompatible
 	github.com/kkaribu/jsonapi v0.3.1-0.20180910015509-f5b275a81041
 	github.com/kkaribu/tchek v0.1.0
 	github.com/myesui/uuid v1.0.0 // indirect
