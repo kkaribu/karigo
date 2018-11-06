@@ -9,7 +9,7 @@ import (
 
 	"github.com/kkaribu/jsonapi"
 	"github.com/kkaribu/tchek"
-	"gopkg.in/urfave/cli.v1"
+	"github.com/urfave/cli"
 )
 
 func makeCLIAppWithMockStore(ms *MockStore) *cli.App {

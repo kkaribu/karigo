@@ -12,8 +12,8 @@ import (
 	"sync"
 
 	"github.com/kkaribu/jsonapi"
-	"gopkg.in/rs/cors.v1"
-	"gopkg.in/urfave/cli.v1"
+	"github.com/rs/cors"
+	"github.com/urfave/cli"
 )
 
 // NewApp creates and returns an App object.

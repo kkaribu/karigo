@@ -4,7 +4,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"gopkg.in/urfave/cli.v1"
+	"github.com/urfave/cli"
 )
 
 func checkCmd() cli.Command {

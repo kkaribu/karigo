@@ -3,7 +3,7 @@ package karigo
 import (
 	"net/http"
 
-	"gopkg.in/dgrijalva/jwt-go.v2"
+	"github.com/dgrijalva/jwt-go"
 )
 
 var (

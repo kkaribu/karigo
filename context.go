@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"sync"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/kkaribu/jsonapi"
-	"gopkg.in/dgrijalva/jwt-go.v2"
 )
 
 // NewCtx creates a Ctx and returns it.
