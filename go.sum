@@ -4,10 +4,6 @@ github.com/dchest/uniuri v0.0.0-20160212164326-8902c56451e9 h1:74lLNRzvsdIlkTgfD
 github.com/dchest/uniuri v0.0.0-20160212164326-8902c56451e9/go.mod h1:GgB8SF9nRG+GqaDtLcwJZsQFhcogVCJ79j4EdT0c2V4=
 github.com/dgrijalva/jwt-go v2.7.0+incompatible h1:54T2qn/iIwjg7JGrMsKD3WID0+CaYUrJgyXDM5ckYLk=
 github.com/dgrijalva/jwt-go v2.7.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=
-github.com/dgrijalva/jwt-go v3.2.0+incompatible h1:7qlOGliEKZXTDg6OTjfoBKDXWrumCAMpl/TFQ4/5kLM=
-github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=
-github.com/kkaribu/jsonapi v0.0.0-20180909215509-f5b275a81 h1:otHm+ttN5iSb7o4YJJy6JVOWw0MMzqk+JbpVlyp99kQ=
-github.com/kkaribu/jsonapi v0.0.0-20180909215509-f5b275a81/go.mod h1:/P/BoGrMRa+Bxq5RwDH0bfhrfjGdT8lu1sVD7Bm8X8w=
 github.com/kkaribu/jsonapi v0.3.1-0.20180910015509-f5b275a81041 h1:3tLNqOBMCl/8avf43EqTy6ylIO+9ohKO2yFx0RWkAK0=
 github.com/kkaribu/jsonapi v0.3.1-0.20180910015509-f5b275a81041/go.mod h1:/P/BoGrMRa+Bxq5RwDH0bfhrfjGdT8lu1sVD7Bm8X8w=
 github.com/kkaribu/tchek v0.1.0 h1:9fyrkkWUgSuzG4N8JQoWbb9ecKdhNpb856MT83E3ygk=
