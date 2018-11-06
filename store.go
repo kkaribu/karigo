@@ -13,9 +13,9 @@ type Store interface {
 	Begin() (Tx, error)
 
 	// Resource manipulation
-	SelectCollection(tx Tx, resType string, from jsonapi.FromFilter, params *jsonapi.Params, c jsonapi.Collection) error
-	SelectResource(tx Tx, resType, resID string, from jsonapi.FromFilter, params *jsonapi.Params, r jsonapi.Resource) error
-	SelectInclusions(tx Tx, originType, originID string, from jsonapi.FromFilter, params *jsonapi.Params) ([]jsonapi.Resource, error)
+	SelectCollection(tx Tx, resType string, from jsonapi.BelongsToFilter, params *jsonapi.Params, c jsonapi.Collection) error
+	SelectResource(tx Tx, resType, resID string, from jsonapi.BelongsToFilter, params *jsonapi.Params, r jsonapi.Resource) error
+	SelectInclusions(tx Tx, originType, originID string, from jsonapi.BelongsToFilter, params *jsonapi.Params) ([]jsonapi.Resource, error)
 	InsertResource(tx Tx, r jsonapi.Resource) error
 	UpdateResource(tx Tx, resType, resID string, updates map[string]interface{}) error
 	DeleteResource(tx Tx, resType, resID string) error
@@ -32,7 +32,7 @@ type Store interface {
 	DeleteAllRelationships(tx Tx, resType, resID, relName string) error
 
 	// Other
-	CountCollectionSize(tx Tx, resType string, from jsonapi.FromFilter, params *jsonapi.Params) (int, error)
+	CountCollectionSize(tx Tx, resType string, from jsonapi.BelongsToFilter, params *jsonapi.Params) (int, error)
 
 	// Database management
 	SetRegistry(reg *jsonapi.Registry)

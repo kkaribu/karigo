@@ -10,9 +10,9 @@ type MockStore struct {
 
 	BeginFunc func() (Tx, error)
 
-	SelectCollectionFunc func(tx Tx, resType string, from jsonapi.FromFilter, params *jsonapi.Params, c jsonapi.Collection) error
-	SelectResourceFunc   func(tx Tx, resType, resID string, from jsonapi.FromFilter, params *jsonapi.Params, r jsonapi.Resource) error
-	SelectInclusionsFunc func(tx Tx, originType, originID string, from jsonapi.FromFilter, params *jsonapi.Params) ([]jsonapi.Resource, error)
+	SelectCollectionFunc func(tx Tx, resType string, from jsonapi.BelongsToFilter, params *jsonapi.Params, c jsonapi.Collection) error
+	SelectResourceFunc   func(tx Tx, resType, resID string, from jsonapi.BelongsToFilter, params *jsonapi.Params, r jsonapi.Resource) error
+	SelectInclusionsFunc func(tx Tx, originType, originID string, from jsonapi.BelongsToFilter, params *jsonapi.Params) ([]jsonapi.Resource, error)
 	InsertResourceFunc   func(tx Tx, r jsonapi.Resource) error
 	UpdateResourceFunc   func(tx Tx, resType, resID string, updates map[string]interface{}) error
 	DeleteResourceFunc   func(tx Tx, resType, resID string) error
@@ -27,7 +27,7 @@ type MockStore struct {
 	DeleteRelationshipsFunc    func(tx Tx, resType, resID, relName string, relIDs []string) error
 	DeleteAllRelationshipsFunc func(tx Tx, resType, resID, relName string) error
 
-	CountCollectionSizeFunc func(tx Tx, resType string, from jsonapi.FromFilter, params *jsonapi.Params) (int, error)
+	CountCollectionSizeFunc func(tx Tx, resType string, from jsonapi.BelongsToFilter, params *jsonapi.Params) (int, error)
 
 	SetRegistryFunc              func(reg *jsonapi.Registry)
 	SelectResourceTablesFunc     func(tx Tx) ([]string, error)
@@ -78,21 +78,21 @@ func (m MockStore) Begin() (Tx, error) {
 	return m.BeginFunc()
 }
 
-func (m MockStore) SelectCollection(tx Tx, resType string, from jsonapi.FromFilter, params *jsonapi.Params, c jsonapi.Collection) error {
+func (m MockStore) SelectCollection(tx Tx, resType string, from jsonapi.BelongsToFilter, params *jsonapi.Params, c jsonapi.Collection) error {
 	if m.SelectCollectionFunc == nil {
 		panic("function SelectCollection in MockStore not implemented")
 	}
 	return m.SelectCollectionFunc(tx, resType, from, params, c)
 }
 
-func (m MockStore) SelectResource(tx Tx, resType, resID string, from jsonapi.FromFilter, params *jsonapi.Params, r jsonapi.Resource) error {
+func (m MockStore) SelectResource(tx Tx, resType, resID string, from jsonapi.BelongsToFilter, params *jsonapi.Params, r jsonapi.Resource) error {
 	if m.SelectResourceFunc == nil {
 		panic("function SelectResource in MockStore not implemented")
 	}
 	return m.SelectResourceFunc(tx, resType, resID, from, params, r)
 }
 
-func (m MockStore) SelectInclusions(tx Tx, originType, originID string, from jsonapi.FromFilter, params *jsonapi.Params) ([]jsonapi.Resource, error) {
+func (m MockStore) SelectInclusions(tx Tx, originType, originID string, from jsonapi.BelongsToFilter, params *jsonapi.Params) ([]jsonapi.Resource, error) {
 	if m.SelectInclusionsFunc == nil {
 		return nil, nil
 	}
@@ -183,7 +183,7 @@ func (m MockStore) DeleteAllRelationships(tx Tx, resType, resID, relName string)
 	return m.DeleteAllRelationshipsFunc(tx, resType, resID, relName)
 }
 
-func (m MockStore) CountCollectionSize(tx Tx, resType string, from jsonapi.FromFilter, params *jsonapi.Params) (int, error) {
+func (m MockStore) CountCollectionSize(tx Tx, resType string, from jsonapi.BelongsToFilter, params *jsonapi.Params) (int, error) {
 	if m.CountCollectionSizeFunc == nil {
 		return 0, nil
 	}

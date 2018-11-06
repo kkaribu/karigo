@@ -171,13 +171,13 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			switch e := rec.(type) {
 			case string:
 				ctx.AddToLog(fmt.Sprintf("String error: %s\n", e))
-				jaerr = jsonapi.NewErrInternal()
+				jaerr = jsonapi.NewErrInternalServerError()
 			case jsonapi.Error:
 				ctx.AddToLog(fmt.Sprintf("JSONAPI error: %s\n", e.Error()))
 				jaerr = e
 			case error:
 				ctx.AddToLog(fmt.Sprintf("Error: %s\n", e))
-				jaerr = jsonapi.NewErrInternal()
+				jaerr = jsonapi.NewErrInternalServerError()
 			}
 
 			ctx.Out = jsonapi.NewDocument()
@@ -230,11 +230,11 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if ctx.Method == "POST" || ctx.Method == "PATCH" {
 		body, err = ioutil.ReadAll(r.Body)
 		if err != nil {
-			panic(jsonapi.NewErrInternal())
+			panic(jsonapi.NewErrInternalServerError())
 		}
 		ctx.In, err = jsonapi.Unmarshal(body, ctx.URL, ctx.App.Registry)
 		if err != nil {
-			panic(jsonapi.NewErrBadRequest())
+			panic(jsonapi.NewErrBadRequest("Bad body", "The body is invalid."))
 		}
 	}
 
@@ -265,7 +265,7 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Begin transaction
 	tx, err := a.Store.Begin()
 	if err != nil {
-		panic(jsonapi.NewErrInternal())
+		panic(jsonapi.NewErrInternalServerError())
 	}
 	ctx.Tx = tx
 
@@ -277,7 +277,7 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Check Document
 	body, err = jsonapi.Marshal(ctx.Out, ctx.URL)
 	if err != nil {
-		panic(jsonapi.NewErrInternal())
+		panic(jsonapi.NewErrInternalServerError())
 	}
 	if a.Config.Minimize {
 		buf := &bytes.Buffer{}

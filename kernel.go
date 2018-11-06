@@ -18,15 +18,15 @@ func (a *App) executeKernel(ctx *Ctx) {
 		ctx.AddToLog("Kernel found.")
 		err := kernel(ctx)
 		if err != nil {
-			panic(jsonapi.NewErrInternal())
+			panic(jsonapi.NewErrInternalServerError())
 		}
 
 		// Pagination
 		if ctx.URL.IsCol && ctx.Method == "GET" {
 			var size int
-			size, err = ctx.App.Store.CountCollectionSize(ctx.Tx, ctx.URL.ResType, ctx.URL.FromFilter, ctx.URL.Params)
+			size, err = ctx.App.Store.CountCollectionSize(ctx.Tx, ctx.URL.ResType, ctx.URL.BelongsToFilter, ctx.URL.Params)
 			if err != nil {
-				panic(jsonapi.NewErrInternal())
+				panic(jsonapi.NewErrInternalServerError())
 			}
 
 			// TODO just to make sure, but is it necessary?
@@ -71,9 +71,9 @@ func (a *App) executeKernel(ctx *Ctx) {
 		}
 
 		// Inclusions
-		inclusions, err := ctx.App.Store.SelectInclusions(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.FromFilter, ctx.URL.Params)
+		inclusions, err := ctx.App.Store.SelectInclusions(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.BelongsToFilter, ctx.URL.Params)
 		if err != nil {
-			panic(jsonapi.NewErrInternal())
+			panic(jsonapi.NewErrInternalServerError())
 		}
 		for _, inc := range inclusions {
 			// id, typ := inc.IDAndType()
@@ -95,7 +95,7 @@ func KernelGetCollection(ctx *Ctx) error {
 	col := ctx.App.Collection(ctx.URL.ResType)
 
 	// Collection
-	err := ctx.App.Store.SelectCollection(ctx.Tx, ctx.URL.ResType, ctx.URL.FromFilter, ctx.URL.Params, col)
+	err := ctx.App.Store.SelectCollection(ctx.Tx, ctx.URL.ResType, ctx.URL.BelongsToFilter, ctx.URL.Params, col)
 	if err != nil {
 		return err
 	}
@@ -112,7 +112,7 @@ func KernelGetResource(ctx *Ctx) error {
 	res := ctx.App.Resource(ctx.URL.ResType)
 
 	// Resource
-	err := ctx.App.Store.SelectResource(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.FromFilter, ctx.URL.Params, res)
+	err := ctx.App.Store.SelectResource(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.BelongsToFilter, ctx.URL.Params, res)
 	if err != nil {
 		return err
 	}
@@ -130,7 +130,7 @@ func KernelInsertResource(ctx *Ctx) error {
 
 	errs := res.Validate()
 	if len(errs) > 0 {
-		return jsonapi.NewErrBadRequest()
+		return jsonapi.NewErrBadRequest("Validation errors", "There are validation errors.")
 	}
 
 	err := ctx.App.Store.InsertResource(ctx.Tx, res)
@@ -147,7 +147,7 @@ func KernelUpdateResource(ctx *Ctx) error {
 
 	errs := res.Validate()
 	if len(errs) > 0 {
-		return jsonapi.NewErrBadRequest()
+		return jsonapi.NewErrBadRequest("Validation errors", "There are validation errors.")
 	}
 
 	err := ctx.App.Store.InsertResource(ctx.Tx, res) // TODO
@@ -170,13 +170,13 @@ func KernelDeleteResource(ctx *Ctx) error {
 
 // KernelGetRelationship ...
 func KernelGetRelationship(ctx *Ctx) error {
-	rel, err := ctx.App.Store.SelectRelationship(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.FromFilter.Type)
+	rel, err := ctx.App.Store.SelectRelationship(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.BelongsToFilter.Type)
 	if err != nil {
 		return err
 	}
 
 	ctx.Out.Data = jsonapi.Identifier{
-		Type: ctx.URL.FromFilter.Type,
+		Type: ctx.URL.BelongsToFilter.Type,
 		ID:   rel,
 	}
 
@@ -188,13 +188,13 @@ func KernelGetRelationship(ctx *Ctx) error {
 // KernelGetRelationships ...
 func KernelGetRelationships(ctx *Ctx) error {
 	// fmt.Printf("REL: %+v\n", ctx.URL.Rel)
-	rels, err := ctx.App.Store.SelectRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.FromFilter.Type)
+	rels, err := ctx.App.Store.SelectRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.BelongsToFilter.Type)
 	if err != nil {
 		return err
 	}
 	// fmt.Printf("LEN(RELS): %d\n", len(rels))
 
-	ctx.Out.Data = jsonapi.NewIdentifiers(ctx.URL.FromFilter.Type, rels)
+	ctx.Out.Data = jsonapi.NewIdentifiers(ctx.URL.BelongsToFilter.Type, rels)
 
 	// body, err := jsonapi.Marshal(jsonapi.NewIdentifiers(ctx.URL.Rel.Type, rels), ctx.URL, ctx.Options)
 
@@ -205,7 +205,7 @@ func KernelGetRelationships(ctx *Ctx) error {
 func KernelInsertRelationships(ctx *Ctx) error {
 	relIDs := ctx.In.Data.(jsonapi.Identifiers)
 
-	err := ctx.App.Store.InsertRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.FromFilter.Type, relIDs.IDs())
+	err := ctx.App.Store.InsertRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.BelongsToFilter.Type, relIDs.IDs())
 	if err != nil {
 		return err
 	}
@@ -217,7 +217,7 @@ func KernelInsertRelationships(ctx *Ctx) error {
 func KernelUpdateRelationship(ctx *Ctx) error {
 	relID := ctx.In.Data.(jsonapi.Identifier)
 
-	err := ctx.App.Store.UpdateRelationship(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.FromFilter.Type, relID.ID)
+	err := ctx.App.Store.UpdateRelationship(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.BelongsToFilter.Type, relID.ID)
 	if err != nil {
 		return err
 	}
@@ -229,7 +229,7 @@ func KernelUpdateRelationship(ctx *Ctx) error {
 func KernelUpdateRelationships(ctx *Ctx) error {
 	relIDs := ctx.In.Data.(jsonapi.Identifiers)
 
-	err := ctx.App.Store.UpdateRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.FromFilter.Type, relIDs.IDs())
+	err := ctx.App.Store.UpdateRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.BelongsToFilter.Type, relIDs.IDs())
 	if err != nil {
 		return err
 	}
@@ -241,7 +241,7 @@ func KernelUpdateRelationships(ctx *Ctx) error {
 func KernelDeleteRelationships(ctx *Ctx) error {
 	relIDs := ctx.In.Data.(jsonapi.Identifiers)
 
-	err := ctx.App.Store.DeleteRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.FromFilter.Name, relIDs.IDs())
+	err := ctx.App.Store.DeleteRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.BelongsToFilter.Name, relIDs.IDs())
 	if err != nil {
 		return err
 	}

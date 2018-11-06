@@ -26,7 +26,7 @@ func TestServerGetRequest(t *testing.T) {
 	}))
 
 	mApp.Store = &MockStore{
-		SelectCollectionFunc: func(tx Tx, resType string, from jsonapi.FromFilter, params *jsonapi.Params, c jsonapi.Collection) error {
+		SelectCollectionFunc: func(tx Tx, resType string, from jsonapi.BelongsToFilter, params *jsonapi.Params, c jsonapi.Collection) error {
 			for i := 0; i < col.Len(); i++ {
 				c.Add(col.Elem(i))
 			}
