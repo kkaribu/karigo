@@ -10,8 +10,18 @@ type Access struct{}
 // Ready ...
 func (a *Access) Ready() {}
 
-// WillRead ...
-func (a *Access) WillRead(lock string) {}
+// WillReadString ...
+func (a *Access) WillReadString(lock string) string { return "" }
+
+// WillReadStrings ...
+func (a *Access) WillReadStrings(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []string {
+	return []string{}
+}
+
+// WillReadInts ...
+func (a *Access) WillReadInts(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []int {
+	return []int{}
+}
 
 // WillWrite ...
 func (a *Access) WillWrite(lock string) {}

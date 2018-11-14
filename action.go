@@ -5,58 +5,46 @@ import (
 )
 
 // ModifyTitleAndAddTag ...
-func ModifyTitleAndAddTag(articleID, tagID string) func(*Access) NTx {
-	return func(access *Access) NTx {
-		access.WillRead("articles." + articleID + ".title")
-		access.WillRead("tags." + tagID + ".id")
+func ModifyTitleAndAddTag(articleID, tagID string) func(*Access) {
+	return func(access *Access) {
+		title := access.WillReadString("articles." + articleID + ".title")
+		_ = access.WillReadString("tags." + tagID + ".id")
+		access.WillWrite("articles." + articleID + ".title")
 		access.WillWrite("articles." + articleID + ".tags")
 		access.Ready()
 
 		// Do some stuff...
-		title := access.GetString("articles.abc123.title")
 		title = strings.ToUpper(title)
-		access.SetString("articles.abc123.title", title)
-		access.Release("articles.abc123.title")
+		access.SetString("articles."+articleID+".title", title)
 
 		// More stuff
-		access.AddToManyRel("articles.abc123.tags", "tags.mytag.id")
-
-		// End the action
-		return access.End()
+		access.AddToManyRel("articles."+articleID+".tags", "tags."+tagID+".id")
 	}
 }
 
 // RemoveAllTagsFromArticle ...
-func RemoveAllTagsFromArticle(articleID string) func(*Access) NTx {
-	return func(access *Access) NTx {
-		access.WillRead("articles." + articleID + ".tags")
+func RemoveAllTagsFromArticle(articleID string) func(*Access) {
+	return func(access *Access) {
+		access.WillWrite("articles." + articleID + ".tags")
 		access.Ready()
 
 		// Do stuff...
 		access.SetToManyRel("articles.abc123.tags", []string{})
-
-		// End the action
-		return access.End()
 	}
 }
 
 // SetRankToTopPlayers ...
-func SetRankToTopPlayers(limit int) func(*Access) NTx {
-	return func(access *Access) NTx {
-		access.WillRead("players.*.score")
-		access.Ready()
+func SetRankToTopPlayers(limit int) func(*Access) {
+	return func(access *Access) {
+		ids := access.WillReadStrings("players.*.id", nil, []string{"score"}, 10, 1)
 		access.WillWrite("players.*.rank")
+		access.Ready()
 
 		// Do stuff...
-		topPlayers := []map[string]uint{}
-		access.GetManyStructs("players", []string{"score"}, nil, []string{"score"}, 10, 1, topPlayers)
 		access.Release("players.*.score")
 
-		for i := 0; i < len(topPlayers); i++ {
+		for i := 0; i < len(ids); i++ {
 			access.SetInt("players."+".rank", i)
 		}
-
-		// End the action
-		return access.End()
 	}
 }
