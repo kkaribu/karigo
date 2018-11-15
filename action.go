@@ -4,11 +4,13 @@ import (
 	"strings"
 )
 
-// ModifyTitleAndAddTag ...
-func ModifyTitleAndAddTag(articleID, tagID string) func(*Access) {
+// ModifyTitleAndAddTags ...
+func ModifyTitleAndAddTags(articleID string, tagIDs ...string) func(*Access) {
 	return func(access *Access) {
-		title := access.WillReadString("articles." + articleID + ".title")
-		_ = access.WillReadString("tags." + tagID + ".id")
+		title := access.GetString("articles." + articleID + ".title")
+		for _, id := range tagIDs {
+			_ = access.GetString("tags." + id + ".id")
+		}
 		access.WillWrite("articles." + articleID + ".title")
 		access.WillWrite("articles." + articleID + ".tags")
 		access.Ready()
@@ -18,7 +20,7 @@ func ModifyTitleAndAddTag(articleID, tagID string) func(*Access) {
 		access.SetString("articles."+articleID+".title", title)
 
 		// More stuff
-		access.AddToManyRel("articles."+articleID+".tags", "tags."+tagID+".id")
+		access.AddToManyRel("articles."+articleID+".tags", tagIDs...)
 	}
 }
 
@@ -36,7 +38,7 @@ func RemoveAllTagsFromArticle(articleID string) func(*Access) {
 // SetRankToTopPlayers ...
 func SetRankToTopPlayers(limit int) func(*Access) {
 	return func(access *Access) {
-		ids := access.WillReadStrings("players.*.id", nil, []string{"score"}, 10, 1)
+		ids := access.GetStrings("players.*.id[score]", nil, []string{"score"}, 10, 1)
 		access.WillWrite("players.*.rank")
 		access.Ready()
 
