@@ -395,4 +395,4 @@ func (a *Access) AddToManyRel(key string, ids ...string) {}
 func (a *Access) SetToManyRel(key string, ids []string) {}
 
 // DeleteToManyRel ...
-func (a *Access) DeleteToManyRel(key string, id string) {}
+func (a *Access) DeleteToManyRel(key string, ids ...string) {}
