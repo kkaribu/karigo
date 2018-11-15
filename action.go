@@ -38,7 +38,7 @@ func RemoveAllTagsFromArticle(articleID string) func(*Access) {
 // SetRankToTopPlayers ...
 func SetRankToTopPlayers(limit int) func(*Access) {
 	return func(acc *Access) {
-		ids := acc.GetStrings("players.*.id[score]", nil, []string{"score"}, 10, 1)
+		ids := acc.GetStrings("players.*.id[score]", nil, 10, 1)
 		acc.WillSet("players.*.rank")
 		acc.Ready()
 

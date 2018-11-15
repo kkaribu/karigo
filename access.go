@@ -94,132 +94,132 @@ func (a *Access) GetBoolPtr(lock string) *bool { return nil }
 func (a *Access) GetTimePtr(lock string) *time.Time { return nil }
 
 // GetStrings ...
-func (a *Access) GetStrings(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []string {
+func (a *Access) GetStrings(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []string {
 	return []string{}
 }
 
 // GetInts ...
-func (a *Access) GetInts(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []int {
+func (a *Access) GetInts(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []int {
 	return []int{}
 }
 
 // GetInt8s ...
-func (a *Access) GetInt8s(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []int8 {
+func (a *Access) GetInt8s(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []int8 {
 	return []int8{}
 }
 
 // GetInt16s ...
-func (a *Access) GetInt16s(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []int16 {
+func (a *Access) GetInt16s(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []int16 {
 	return []int16{}
 }
 
 // GetInt32s ...
-func (a *Access) GetInt32s(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []int32 {
+func (a *Access) GetInt32s(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []int32 {
 	return []int32{}
 }
 
 // GetInt64s ...
-func (a *Access) GetInt64s(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []int64 {
+func (a *Access) GetInt64s(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []int64 {
 	return []int64{}
 }
 
 // GetUints ...
-func (a *Access) GetUints(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []uint {
+func (a *Access) GetUints(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []uint {
 	return []uint{}
 }
 
 // GetUint8s ...
-func (a *Access) GetUint8s(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []uint8 {
+func (a *Access) GetUint8s(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []uint8 {
 	return []uint8{}
 }
 
 // GetUint16s ...
-func (a *Access) GetUint16s(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []uint16 {
+func (a *Access) GetUint16s(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []uint16 {
 	return []uint16{}
 }
 
 // GetUint32s ...
-func (a *Access) GetUint32s(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []uint32 {
+func (a *Access) GetUint32s(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []uint32 {
 	return []uint32{}
 }
 
 // GetUint64s ...
-func (a *Access) GetUint64s(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []uint64 {
+func (a *Access) GetUint64s(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []uint64 {
 	return []uint64{}
 }
 
 // GetBools ...
-func (a *Access) GetBools(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []bool {
+func (a *Access) GetBools(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []bool {
 	return []bool{}
 }
 
 // GetTimes ...
-func (a *Access) GetTimes(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []time.Time {
+func (a *Access) GetTimes(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []time.Time {
 	return []time.Time{}
 }
 
 // GetStringPtrs ...
-func (a *Access) GetStringPtrs(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []*string {
+func (a *Access) GetStringPtrs(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []*string {
 	return []*string{}
 }
 
 // GetIntPtrs ...
-func (a *Access) GetIntPtrs(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []*int {
+func (a *Access) GetIntPtrs(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []*int {
 	return []*int{}
 }
 
 // GetInt8Ptrs ...
-func (a *Access) GetInt8Ptrs(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []*int8 {
+func (a *Access) GetInt8Ptrs(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []*int8 {
 	return []*int8{}
 }
 
 // GetInt16Ptrs ...
-func (a *Access) GetInt16Ptrs(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []*int16 {
+func (a *Access) GetInt16Ptrs(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []*int16 {
 	return []*int16{}
 }
 
 // GetInt32Ptrs ...
-func (a *Access) GetInt32Ptrs(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []*int32 {
+func (a *Access) GetInt32Ptrs(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []*int32 {
 	return []*int32{}
 }
 
 // GetInt64Ptrs ...
-func (a *Access) GetInt64Ptrs(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []*int64 {
+func (a *Access) GetInt64Ptrs(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []*int64 {
 	return []*int64{}
 }
 
 // GetUintPtrs ...
-func (a *Access) GetUintPtrs(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []*uint {
+func (a *Access) GetUintPtrs(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []*uint {
 	return []*uint{}
 }
 
 // GetUint8Ptrs ...
-func (a *Access) GetUint8Ptrs(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []*uint8 {
+func (a *Access) GetUint8Ptrs(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []*uint8 {
 	return []*uint8{}
 }
 
 // GetUint16Ptrs ...
-func (a *Access) GetUint16Ptrs(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []*uint16 {
+func (a *Access) GetUint16Ptrs(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []*uint16 {
 	return []*uint16{}
 }
 
 // GetUint32Ptrs ...
-func (a *Access) GetUint32Ptrs(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []*uint32 {
+func (a *Access) GetUint32Ptrs(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []*uint32 {
 	return []*uint32{}
 }
 
 // GetUint64Ptrs ...
-func (a *Access) GetUint64Ptrs(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []*uint64 {
+func (a *Access) GetUint64Ptrs(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []*uint64 {
 	return []*uint64{}
 }
 
 // GetBoolPtrs ...
-func (a *Access) GetBoolPtrs(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []*bool {
+func (a *Access) GetBoolPtrs(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []*bool {
 	return []*bool{}
 }
 
 // GetTimePtrs ...
-func (a *Access) GetTimePtrs(lock string, filter *jsonapi.Condition, sort []string, pageSize, pageNumber int) []*time.Time {
+func (a *Access) GetTimePtrs(lock string, filter *jsonapi.Condition, pageSize, pageNumber int) []*time.Time {
 	return []*time.Time{}
 }
 
