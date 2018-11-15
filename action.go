@@ -6,47 +6,47 @@ import (
 
 // ModifyTitleAndAddTags ...
 func ModifyTitleAndAddTags(articleID string, tagIDs ...string) func(*Access) {
-	return func(access *Access) {
-		title := access.GetString("articles." + articleID + ".title")
+	return func(acc *Access) {
+		title := acc.GetString("articles." + articleID + ".title")
 		for _, id := range tagIDs {
-			_ = access.GetString("tags." + id + ".id")
+			_ = acc.GetString("tags." + id + ".id")
 		}
-		access.WillSet("articles." + articleID + ".title")
-		access.WillSet("articles." + articleID + ".tags")
-		access.Ready()
+		acc.WillSet("articles." + articleID + ".title")
+		acc.WillSet("articles." + articleID + ".tags")
+		acc.Ready()
 
 		// Do some stuff...
 		title = strings.ToUpper(title)
-		access.SetString("articles."+articleID+".title", title)
+		acc.SetString("articles."+articleID+".title", title)
 
 		// More stuff
-		access.AddToManyRel("articles."+articleID+".tags", tagIDs...)
+		acc.AddToManyRel("articles."+articleID+".tags", tagIDs...)
 	}
 }
 
 // RemoveAllTagsFromArticle ...
 func RemoveAllTagsFromArticle(articleID string) func(*Access) {
-	return func(access *Access) {
-		access.WillSet("articles." + articleID + ".tags")
-		access.Ready()
+	return func(acc *Access) {
+		acc.WillSet("articles." + articleID + ".tags")
+		acc.Ready()
 
 		// Do stuff...
-		access.SetToManyRel("articles.abc123.tags", []string{})
+		acc.SetToManyRel("articles.abc123.tags", []string{})
 	}
 }
 
 // SetRankToTopPlayers ...
 func SetRankToTopPlayers(limit int) func(*Access) {
-	return func(access *Access) {
-		ids := access.GetStrings("players.*.id[score]", nil, []string{"score"}, 10, 1)
-		access.WillSet("players.*.rank")
-		access.Ready()
+	return func(acc *Access) {
+		ids := acc.GetStrings("players.*.id[score]", nil, []string{"score"}, 10, 1)
+		acc.WillSet("players.*.rank")
+		acc.Ready()
 
 		// Do stuff...
-		access.Release("players.*.score")
+		acc.Release("players.*.score")
 
 		for i := 0; i < len(ids); i++ {
-			access.SetInt("players."+".rank", i)
+			acc.SetInt("players."+".rank", i)
 		}
 	}
 }
