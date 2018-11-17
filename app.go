@@ -86,21 +86,6 @@ func (a *App) ReadConfig(data []byte) error {
 	return nil
 }
 
-// Merge ...
-func (a *App) Merge(na *App) {
-	for n, t := range na.Types {
-		a.Types[n] = t
-	}
-
-	for n, k := range na.Kernels {
-		a.Kernels[n] = k
-	}
-
-	for n, g := range na.Gates {
-		a.Gates[n] = g
-	}
-}
-
 // RunCLI ...
 func (a *App) RunCLI() {
 	a.CLI.Name = a.Config.Name
