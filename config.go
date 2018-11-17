@@ -3,6 +3,7 @@ package karigo
 // Config ...
 type Config struct {
 	Name     string
+	PrePath  string
 	Port     uint16
 	Debug    bool
 	Info     bool
