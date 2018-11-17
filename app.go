@@ -126,16 +126,6 @@ func (a *App) Shutdown() error {
 	return a.Server.Shutdown(nil)
 }
 
-// Schema ...
-func (a *App) Schema() string {
-	info, err := json.MarshalIndent(a, "", "\t")
-	if err != nil {
-		panic(err)
-	}
-
-	return string(info)
-}
-
 func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx := NewCtx(a, WrapResponseWriter(w), r)
 	ctx.AddToLog("Request starting...")
