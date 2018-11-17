@@ -93,12 +93,10 @@ func (a *App) RunCLI() {
 	a.CLI.Metadata = map[string]interface{}{}
 	a.CLI.Metadata["app"] = a
 
-	a.AddCmd(
-		drainCmd(),
-		runCmd(),
-		schemaCmd(),
-		checkCmd(),
-	)
+	a.CLI.Commands = append(a.CLI.Commands, drainCmd())
+	a.CLI.Commands = append(a.CLI.Commands, runCmd())
+	a.CLI.Commands = append(a.CLI.Commands, schemaCmd())
+	a.CLI.Commands = append(a.CLI.Commands, checkCmd())
 
 	err := a.CLI.Run(os.Args)
 	if err != nil {
@@ -106,11 +104,6 @@ func (a *App) RunCLI() {
 	}
 
 	fmt.Println()
-}
-
-// AddCmd ...
-func (a *App) AddCmd(cmd ...cli.Command) {
-	a.CLI.Commands = append(a.CLI.Commands, cmd...)
 }
 
 // Run ...
