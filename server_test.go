@@ -37,7 +37,7 @@ func TestServerGetRequest(t *testing.T) {
 	url, err := url.Parse(mServer.URL + "/mocktypes3")
 	tchek.UnintendedError(err)
 
-	jurl, err := jsonapi.ParseURL(jsonapi.NewMockRegistry(), url)
+	jurl, err := jsonapi.ParseRawURL(jsonapi.NewMockRegistry(), url.String())
 	tchek.UnintendedError(err)
 
 	res, err := http.Get(url.String())
