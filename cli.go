@@ -1,6 +1,7 @@
 package karigo
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
 
@@ -95,8 +96,13 @@ func schemaCmd() cli.Command {
 				return err
 			}
 
+			info, err := json.MarshalIndent(app, "", "\t")
+			if err != nil {
+				panic(err)
+			}
+
 			// Info
-			app.Info("\n" + app.Schema())
+			app.Info("\n" + string(info))
 
 			TerminateCmd(app)
 
