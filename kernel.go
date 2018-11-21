@@ -100,9 +100,20 @@ func KernelGetCollection(ctx *Ctx) error {
 		return err
 	}
 
-	ctx.Out.Data = col
+	_ = ctx.App.Log.Read(func(acc *Access) {
+		ActionGetCollection(
+			ctx.URL.ResType,
+			ctx.URL.BelongsToFilter,
+			ctx.URL.Params.Fields[ctx.URL.ResType],
+			ctx.URL.Params.Filter,
+			ctx.URL.Params.SortingRules,
+			ctx.URL.Params.PageSize,
+			ctx.URL.Params.PageSize,
+			col,
+		)(acc)
+	})
 
-	// body, err := jsonapi.Marshal(res, ctx.URL, ctx.Options)
+	ctx.Out.Data = col
 
 	return nil
 }
@@ -128,15 +139,13 @@ func KernelGetResource(ctx *Ctx) error {
 func KernelInsertResource(ctx *Ctx) error {
 	res := ctx.In.Data.(jsonapi.Resource)
 
-	errs := res.Validate()
-	if len(errs) > 0 {
-		return jsonapi.NewErrBadRequest("Validation errors", "There are validation errors.")
-	}
+	res.SetID(RandomID(12))
 
-	err := ctx.App.Store.InsertResource(ctx.Tx, res)
-	if err != nil {
-		panic(err)
-	}
+	_ = ctx.App.Log.Execute(func(acc *Access) {
+		ActionInsertResource(res)(acc)
+	})
+
+	ctx.Out.Data = res
 
 	return nil
 }

@@ -19,12 +19,14 @@ import (
 // NewApp creates and returns an App object.
 func NewApp(store Store) *App {
 	app := &App{
+		Log:    &Log{},
 		Store:  store,
 		CLI:    cli.NewApp(),
 		Server: http.Server{},
 
 		Registry: jsonapi.NewRegistry(),
 
+		Actions: map[string]Action{},
 		Kernels: map[string]Kernel{},
 		Gates:   map[string][]Gate{},
 	}
@@ -40,12 +42,14 @@ type App struct {
 	sync.Mutex
 
 	Config Config
+	Log    *Log        `json:"-"`
 	Store  Store       `json:"-"`
 	CLI    *cli.App    `json:"-"`
 	Server http.Server `json:"-"`
 
 	*jsonapi.Registry
 
+	Actions map[string]Action `json:"-"`
 	Kernels map[string]Kernel `json:"-"`
 	Gates   map[string][]Gate `json:"-"`
 }
