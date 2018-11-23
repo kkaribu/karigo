@@ -92,43 +92,43 @@ func (a *App) executeKernel(ctx *Ctx) {
 
 // KernelGetCollection ...
 func KernelGetCollection(ctx *Ctx) error {
-	col := ctx.App.Collection(ctx.URL.ResType)
+	// col := ctx.App.Collection(ctx.URL.ResType)
 
-	// Collection
-	err := ctx.App.Store.SelectCollection(ctx.Tx, ctx.URL.ResType, ctx.URL.BelongsToFilter, ctx.URL.Params, col)
-	if err != nil {
-		return err
-	}
+	// // Collection
+	// err := ctx.App.Store.SelectCollection(ctx.Tx, ctx.URL.ResType, ctx.URL.BelongsToFilter, ctx.URL.Params, col)
+	// if err != nil {
+	// 	return err
+	// }
 
-	_ = ctx.App.Log.Read(func(acc *Access) {
-		ActionGetCollection(
-			ctx.URL.ResType,
-			ctx.URL.BelongsToFilter,
-			ctx.URL.Params.Fields[ctx.URL.ResType],
-			ctx.URL.Params.Filter,
-			ctx.URL.Params.SortingRules,
-			ctx.URL.Params.PageSize,
-			ctx.URL.Params.PageSize,
-			col,
-		)(acc)
-	})
+	// _ = ctx.App.Log.Read(func(acc *Access) {
+	// 	ActionGetCollection(
+	// 		ctx.URL.ResType,
+	// 		ctx.URL.BelongsToFilter,
+	// 		ctx.URL.Params.Fields[ctx.URL.ResType],
+	// 		ctx.URL.Params.Filter,
+	// 		ctx.URL.Params.SortingRules,
+	// 		ctx.URL.Params.PageSize,
+	// 		ctx.URL.Params.PageSize,
+	// 		col,
+	// 	)(acc)
+	// })
 
-	ctx.Out.Data = col
+	// ctx.Out.Data = col
 
 	return nil
 }
 
 // KernelGetResource ...
 func KernelGetResource(ctx *Ctx) error {
-	res := ctx.App.Resource(ctx.URL.ResType)
+	// res := ctx.App.Resource(ctx.URL.ResType)
 
-	// Resource
-	err := ctx.App.Store.SelectResource(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.BelongsToFilter, ctx.URL.Params, res)
-	if err != nil {
-		return err
-	}
+	// // Resource
+	// err := ctx.App.Store.SelectResource(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.BelongsToFilter, ctx.URL.Params, res)
+	// if err != nil {
+	// 	return err
+	// }
 
-	ctx.Out.Data = res
+	// ctx.Out.Data = res
 
 	// body, err := jsonapi.Marshal(res, ctx.URL, ctx.Options)
 
