@@ -5,7 +5,9 @@ import (
 )
 
 // Access ...
-type Access struct{}
+type Access struct {
+	updates map[SimpleKey]interface{}
+}
 
 // Ready ...
 func (a *Access) Ready() {}
@@ -20,82 +22,82 @@ func (a *Access) WillGet(key Key) {}
 func (a *Access) Get(key Key) interface{} { return nil }
 
 // GetString ...
-func (a *Access) GetString(key Key) string { return "" }
+func (a *Access) GetString(key SimpleKey) string { return "" }
 
 // GetInt ...
-func (a *Access) GetInt(key Key) int { return 0 }
+func (a *Access) GetInt(key SimpleKey) int { return 0 }
 
 // GetInt8 ...
-func (a *Access) GetInt8(key Key) int8 { return 0 }
+func (a *Access) GetInt8(key SimpleKey) int8 { return 0 }
 
 // GetInt16 ...
-func (a *Access) GetInt16(key Key) int16 { return 0 }
+func (a *Access) GetInt16(key SimpleKey) int16 { return 0 }
 
 // GetInt32 ...
-func (a *Access) GetInt32(key Key) int32 { return 0 }
+func (a *Access) GetInt32(key SimpleKey) int32 { return 0 }
 
 // GetInt64 ...
-func (a *Access) GetInt64(key Key) int64 { return 0 }
+func (a *Access) GetInt64(key SimpleKey) int64 { return 0 }
 
 // GetUint ...
-func (a *Access) GetUint(key Key) uint { return 0 }
+func (a *Access) GetUint(key SimpleKey) uint { return 0 }
 
 // GetUint8 ...
-func (a *Access) GetUint8(key Key) uint8 { return 0 }
+func (a *Access) GetUint8(key SimpleKey) uint8 { return 0 }
 
 // GetUint16 ...
-func (a *Access) GetUint16(key Key) uint16 { return 0 }
+func (a *Access) GetUint16(key SimpleKey) uint16 { return 0 }
 
 // GetUint32 ...
-func (a *Access) GetUint32(key Key) uint32 { return 0 }
+func (a *Access) GetUint32(key SimpleKey) uint32 { return 0 }
 
 // GetUint64 ...
-func (a *Access) GetUint64(key Key) uint64 { return 0 }
+func (a *Access) GetUint64(key SimpleKey) uint64 { return 0 }
 
 // GetBool ...
-func (a *Access) GetBool(key Key) bool { return false }
+func (a *Access) GetBool(key SimpleKey) bool { return false }
 
 // GetTime ...
-func (a *Access) GetTime(key Key) time.Time { return time.Time{} }
+func (a *Access) GetTime(key SimpleKey) time.Time { return time.Time{} }
 
 // GetStringPtr ...
-func (a *Access) GetStringPtr(key Key) *string { return nil }
+func (a *Access) GetStringPtr(key SimpleKey) *string { return nil }
 
 // GetIntPtr ...
-func (a *Access) GetIntPtr(key Key) *int { return nil }
+func (a *Access) GetIntPtr(key SimpleKey) *int { return nil }
 
 // GetInt8Ptr ...
-func (a *Access) GetInt8Ptr(key Key) *int8 { return nil }
+func (a *Access) GetInt8Ptr(key SimpleKey) *int8 { return nil }
 
 // GetInt16Ptr ...
-func (a *Access) GetInt16Ptr(key Key) *int16 { return nil }
+func (a *Access) GetInt16Ptr(key SimpleKey) *int16 { return nil }
 
 // GetInt32Ptr ...
-func (a *Access) GetInt32Ptr(key Key) *int32 { return nil }
+func (a *Access) GetInt32Ptr(key SimpleKey) *int32 { return nil }
 
 // GetInt64Ptr ...
-func (a *Access) GetInt64Ptr(key Key) *int64 { return nil }
+func (a *Access) GetInt64Ptr(key SimpleKey) *int64 { return nil }
 
 // GetUintPtr ...
-func (a *Access) GetUintPtr(key Key) *uint { return nil }
+func (a *Access) GetUintPtr(key SimpleKey) *uint { return nil }
 
 // GetUint8Ptr ...
-func (a *Access) GetUint8Ptr(key Key) *uint8 { return nil }
+func (a *Access) GetUint8Ptr(key SimpleKey) *uint8 { return nil }
 
 // GetUint16Ptr ...
-func (a *Access) GetUint16Ptr(key Key) *uint16 { return nil }
+func (a *Access) GetUint16Ptr(key SimpleKey) *uint16 { return nil }
 
 // GetUint32Ptr ...
-func (a *Access) GetUint32Ptr(key Key) *uint32 { return nil }
+func (a *Access) GetUint32Ptr(key SimpleKey) *uint32 { return nil }
 
 // GetUint64Ptr ...
-func (a *Access) GetUint64Ptr(key Key) *uint64 { return nil }
+func (a *Access) GetUint64Ptr(key SimpleKey) *uint64 { return nil }
 
 // GetBoolPtr ...
-func (a *Access) GetBoolPtr(key Key) *bool { return nil }
+func (a *Access) GetBoolPtr(key SimpleKey) *bool { return nil }
 
 // GetTimePtr ...
-func (a *Access) GetTimePtr(key Key) *time.Time { return nil }
+func (a *Access) GetTimePtr(key SimpleKey) *time.Time { return nil }
 
 // GetResFields ...
 func (a *Access) GetResFields(key Key) map[string]interface{} {

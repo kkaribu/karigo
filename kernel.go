@@ -92,45 +92,26 @@ func (a *App) executeKernel(ctx *Ctx) {
 
 // KernelGetCollection ...
 func KernelGetCollection(ctx *Ctx) error {
-	// col := ctx.App.Collection(ctx.URL.ResType)
+	col := ctx.App.Collection(ctx.URL.ResType)
 
-	// // Collection
-	// err := ctx.App.Store.SelectCollection(ctx.Tx, ctx.URL.ResType, ctx.URL.BelongsToFilter, ctx.URL.Params, col)
-	// if err != nil {
-	// 	return err
-	// }
+	_ = ctx.App.Log.ReadAsync(func(acc *Access) {
+		ActionGetCollection(ctx.Key, col)(acc)
+	})
 
-	// _ = ctx.App.Log.Read(func(acc *Access) {
-	// 	ActionGetCollection(
-	// 		ctx.URL.ResType,
-	// 		ctx.URL.BelongsToFilter,
-	// 		ctx.URL.Params.Fields[ctx.URL.ResType],
-	// 		ctx.URL.Params.Filter,
-	// 		ctx.URL.Params.SortingRules,
-	// 		ctx.URL.Params.PageSize,
-	// 		ctx.URL.Params.PageSize,
-	// 		col,
-	// 	)(acc)
-	// })
-
-	// ctx.Out.Data = col
+	ctx.Out.Data = col
 
 	return nil
 }
 
 // KernelGetResource ...
 func KernelGetResource(ctx *Ctx) error {
-	// res := ctx.App.Resource(ctx.URL.ResType)
+	res := ctx.App.Resource(ctx.URL.ResType)
 
-	// // Resource
-	// err := ctx.App.Store.SelectResource(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.BelongsToFilter, ctx.URL.Params, res)
-	// if err != nil {
-	// 	return err
-	// }
+	_ = ctx.App.Log.Execute(func(acc *Access) {
+		ActionGetResource(ctx.Key, res)(acc)
+	})
 
-	// ctx.Out.Data = res
-
-	// body, err := jsonapi.Marshal(res, ctx.URL, ctx.Options)
+	ctx.Out.Data = res
 
 	return nil
 }
@@ -138,11 +119,10 @@ func KernelGetResource(ctx *Ctx) error {
 // KernelInsertResource ...
 func KernelInsertResource(ctx *Ctx) error {
 	res := ctx.In.Data.(jsonapi.Resource)
-
 	res.SetID(RandomID(12))
 
 	_ = ctx.App.Log.Execute(func(acc *Access) {
-		ActionInsertResource(res)(acc)
+		ActionInsertResource(ctx.In.Data.(jsonapi.Resource))(acc)
 	})
 
 	ctx.Out.Data = res

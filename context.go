@@ -34,9 +34,11 @@ type Ctx struct {
 	Log []string
 
 	// Request
-	W      ResponseWriter `json:"-"`
-	Method string
-	URL    *jsonapi.URL
+	W         ResponseWriter `json:"-"`
+	Method    string
+	URL       *jsonapi.URL
+	Key       Key
+	SimpleKey SimpleKey
 
 	// User
 	JWT    *jwt.Token `json:"-"`
