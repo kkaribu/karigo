@@ -4,7 +4,7 @@ import (
 	"github.com/kkaribu/jsonapi"
 )
 
-// Key represents a resource or a collection.
+// Query represents a resource or a collection.
 //
 // To get a resource, only Type and ID are used.
 // To get a collection, all fields except ID are considered.
@@ -12,7 +12,7 @@ import (
 // Filter is not necessary.
 // Fields will default to a slice containing the string "id"
 // if nil or empty.
-type Key struct {
+type Query struct {
 	Type            string
 	ID              string
 	Fields          []string
@@ -23,8 +23,8 @@ type Key struct {
 	PageNumber      int
 }
 
-// NewKey creates a new *Key object from a *jsonapi.URL object.
-func NewKey(url *jsonapi.URL) *Key {
+// NewQuery creates a new *Query object from a *jsonapi.URL object.
+func NewQuery(url *jsonapi.URL) *Query {
 	var fields []string
 	if f, ok := url.Params.Fields[url.ResType]; ok {
 		fields = make([]string, len(f))
@@ -33,7 +33,7 @@ func NewKey(url *jsonapi.URL) *Key {
 		fields = []string{"id"}
 	}
 
-	key := &Key{
+	query := &Query{
 		Type:            url.ResType,
 		ID:              url.ResID,
 		Fields:          fields,
@@ -44,11 +44,11 @@ func NewKey(url *jsonapi.URL) *Key {
 		PageNumber:      url.Params.PageNumber,
 	}
 
-	return key
+	return query
 }
 
 // String ...
-// TODO Implement Key.String
-func (k *Key) String() string {
+// TODO Implement Query.String
+func (k *Query) String() string {
 	return ""
 }
