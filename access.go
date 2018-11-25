@@ -6,7 +6,7 @@ import (
 
 // Access ...
 type Access struct {
-	updates map[SimpleKey]interface{}
+	udpates map[SimpleKey]interface{}
 }
 
 // Ready ...

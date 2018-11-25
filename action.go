@@ -13,14 +13,6 @@ type Action interface {
  * GENERIC ACTIONS
  */
 
-// ActionGetRelatedIDs ...
-// func ActionGetRelatedIDs(typ, id, rel string, ids *[]string) func(*Access) {
-// 	return func(acc *Access) {
-// 		ids2 := acc.GetToManyRel(typ + "." + id + "." + rel)
-// 		*ids = ids2
-// 	}
-// }
-
 // ActionGetCollection ...
 func ActionGetCollection(key Key, col jsonapi.Collection) func(*Access) {
 	return func(acc *Access) {
