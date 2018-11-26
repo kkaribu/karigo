@@ -28,17 +28,17 @@ type Ctx struct {
 	sync.Mutex `json:"-"`
 
 	App *App `json:"-"`
-	Tx  Tx
+	Tx  func(acc *Access)
 
 	// Log
 	Log []string
 
 	// Request
-	W         ResponseWriter `json:"-"`
-	Method    string
-	URL       *jsonapi.URL
-	Key       Key
-	SimpleKey SimpleKey
+	W      ResponseWriter `json:"-"`
+	Method string
+	URL    *jsonapi.URL
+	Query  Query
+	Key    Key
 
 	// User
 	JWT    *jwt.Token `json:"-"`

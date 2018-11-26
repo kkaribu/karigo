@@ -1,7 +1,6 @@
 package karigo
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/kkaribu/jsonapi"
@@ -14,226 +13,89 @@ type Kernel func(ctx *Ctx) error
 func (a *App) executeKernel(ctx *Ctx) {
 	ctx.AddToLog(fmt.Sprintf("Looking for %s.", ctx.Method+" "+ctx.URL.Route))
 
-	if kernel, ok := a.Kernels[ctx.Method+" "+ctx.URL.Route]; ok {
-		ctx.AddToLog("Kernel found.")
-		err := kernel(ctx)
-		if err != nil {
-			panic(jsonapi.NewErrInternalServerError())
-		}
+	var tx func(acc *Access)
 
-		// Pagination
-		if ctx.URL.IsCol && ctx.Method == "GET" {
-			var size int
-			size, err = ctx.App.Store.CountCollectionSize(ctx.Tx, ctx.URL.ResType, ctx.URL.BelongsToFilter, ctx.URL.Params)
-			if err != nil {
-				panic(jsonapi.NewErrInternalServerError())
-			}
+	if ctx.Method == "GET" {
+		tx = func(acc *Access) {
+			if ctx.URL.IsCol {
+				// Get collection
+				var size int
+				ActionGetCollectionSize(ctx.Query, &size)(acc)
 
-			// TODO just to make sure, but is it necessary?
-			if ctx.URL.Params.PageSize <= 0 {
-				ctx.URL.Params.PageSize = 1000
-			}
+				col := ctx.App.Collection(ctx.URL.ResType)
+				ActionGetCollection(ctx.Query, col)(acc)
+				ctx.Out.Data = col
 
-			totalPages := size / ctx.URL.Params.PageSize
-			if size%ctx.URL.Params.PageSize != 0 {
-				totalPages++
-			}
+				// TODO just to make sure, but is it necessary?
+				if ctx.URL.Params.PageSize <= 0 {
+					ctx.URL.Params.PageSize = 1000
+				}
 
-			// ctx.Out.Options.Meta["total-pages"] = (size / ctx.URL.Params.PageSize) + 1
-			if totalPages == 0 {
-				totalPages = 1
-			}
-			ctx.Out.Meta["total-pages"] = totalPages
+				totalPages := size / ctx.URL.Params.PageSize
+				if size%ctx.URL.Params.PageSize != 0 {
+					totalPages++
+				}
 
-			pageNumber := ctx.URL.Params.PageNumber
+				// ctx.Out.Options.Meta["total-pages"] = (size / ctx.URL.Params.PageSize) + 1
+				if totalPages == 0 {
+					totalPages = 1
+				}
+				ctx.Out.Meta["total-pages"] = totalPages
 
-			ctx.Out.Links["self"] = jsonapi.Link{HRef: ctx.URL.NormalizePath()}
+				pageNumber := ctx.URL.Params.PageNumber
 
-			ctx.URL.Params.PageNumber = 1
-			ctx.Out.Links["first"] = jsonapi.Link{HRef: ctx.URL.NormalizePath()}
+				ctx.Out.Links["self"] = jsonapi.Link{HRef: ctx.URL.NormalizePath()}
 
-			ctx.URL.Params.PageNumber = pageNumber - 1
-			if ctx.URL.Params.PageNumber == 0 {
 				ctx.URL.Params.PageNumber = 1
-			}
-			ctx.Out.Links["prev"] = jsonapi.Link{HRef: ctx.URL.NormalizePath()}
+				ctx.Out.Links["first"] = jsonapi.Link{HRef: ctx.URL.NormalizePath()}
 
-			ctx.URL.Params.PageNumber = pageNumber + 1
-			if ctx.URL.Params.PageNumber > totalPages {
+				ctx.URL.Params.PageNumber = pageNumber - 1
+				if ctx.URL.Params.PageNumber == 0 {
+					ctx.URL.Params.PageNumber = 1
+				}
+				ctx.Out.Links["prev"] = jsonapi.Link{HRef: ctx.URL.NormalizePath()}
+
+				ctx.URL.Params.PageNumber = pageNumber + 1
+				if ctx.URL.Params.PageNumber > totalPages {
+					ctx.URL.Params.PageNumber = totalPages
+				}
+				ctx.Out.Links["next"] = jsonapi.Link{HRef: ctx.URL.NormalizePath()}
+
 				ctx.URL.Params.PageNumber = totalPages
+				ctx.Out.Links["last"] = jsonapi.Link{HRef: ctx.URL.NormalizePath()}
+
+				ctx.URL.Params.PageNumber = pageNumber
+			} else {
+				// Get resource
+				res := ctx.App.Resource(ctx.URL.ResType)
+				ActionGetResource(ctx.Query, res)(acc)
+				ctx.Out.Data = res
 			}
-			ctx.Out.Links["next"] = jsonapi.Link{HRef: ctx.URL.NormalizePath()}
 
-			ctx.URL.Params.PageNumber = totalPages
-			ctx.Out.Links["last"] = jsonapi.Link{HRef: ctx.URL.NormalizePath()}
-
-			ctx.URL.Params.PageNumber = pageNumber
+			// Get inclusions
+			for _, inc := range ctx.URL.Params.Include {
+				for i := 0; i < len(inc); i++ {
+					path := inc[:i+1]
+					rels := make([]string, 0, len(path))
+					var typ string
+					for _, p := range path {
+						rels = append(rels, p.Name)
+						typ = p.Type
+					}
+					inclusions := ctx.App.Registry.Collection(typ)
+					ActionGetInclusions(ctx.Query, rels, ctx.URL.Params.Fields[typ], inclusions)(acc)
+				}
+			}
 		}
-
-		// Inclusions
-		inclusions, err := ctx.App.Store.SelectInclusions(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.BelongsToFilter, ctx.URL.Params)
-		if err != nil {
-			panic(jsonapi.NewErrInternalServerError())
-		}
-		for _, inc := range inclusions {
-			// id, typ := inc.IDAndType()
-			// fmt.Printf("About to include %s %s\n\n\n", typ, id)
-			ctx.Out.Include(inc)
-		}
-	} else {
-		ctx.AddToLog("Kernel not found.")
-		panic(jsonapi.NewErrNotFound())
-	}
-}
-
-/*
- * DEFAULT KERNELS
- */
-
-// KernelGetCollection ...
-func KernelGetCollection(ctx *Ctx) error {
-	col := ctx.App.Collection(ctx.URL.ResType)
-
-	_ = ctx.App.Log.ReadAsync(func(acc *Access) {
-		ActionGetCollection(ctx.Key, col)(acc)
-	})
-
-	ctx.Out.Data = col
-
-	return nil
-}
-
-// KernelGetResource ...
-func KernelGetResource(ctx *Ctx) error {
-	res := ctx.App.Resource(ctx.URL.ResType)
-
-	_ = ctx.App.Log.Execute(func(acc *Access) {
-		ActionGetResource(ctx.Key, res)(acc)
-	})
-
-	ctx.Out.Data = res
-
-	return nil
-}
-
-// KernelInsertResource ...
-func KernelInsertResource(ctx *Ctx) error {
-	res := ctx.In.Data.(jsonapi.Resource)
-	res.SetID(RandomID(12))
-
-	_ = ctx.App.Log.Execute(func(acc *Access) {
-		ActionInsertResource(ctx.In.Data.(jsonapi.Resource))(acc)
-	})
-
-	ctx.Out.Data = res
-
-	return nil
-}
-
-// KernelUpdateResource ...
-func KernelUpdateResource(ctx *Ctx) error {
-	res := ctx.In.Data.(jsonapi.Resource)
-
-	errs := res.Validate()
-	if len(errs) > 0 {
-		return jsonapi.NewErrBadRequest("Validation errors", "There are validation errors.")
+	} else if ctx.Method == "POST" {
+		tx = func(acc *Access) {}
+	} else if ctx.Method == "PATCH" {
+		tx = func(acc *Access) {}
+	} else if ctx.Method == "DELETE" {
+		tx = func(acc *Access) {}
 	}
 
-	err := ctx.App.Store.InsertResource(ctx.Tx, res) // TODO
-	if err != nil {
-		panic(err)
+	ctx.Tx = func(acc *Access) {
+		tx(acc)
 	}
-
-	return nil
-}
-
-// KernelDeleteResource ...
-func KernelDeleteResource(ctx *Ctx) error {
-	err := ctx.App.Store.DeleteResource(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID)
-	if err != nil {
-		return errors.New("karigo: resource could not be deleted")
-	}
-
-	return nil
-}
-
-// KernelGetRelationship ...
-func KernelGetRelationship(ctx *Ctx) error {
-	rel, err := ctx.App.Store.SelectRelationship(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.BelongsToFilter.Type)
-	if err != nil {
-		return err
-	}
-
-	ctx.Out.Data = jsonapi.Identifier{
-		Type: ctx.URL.BelongsToFilter.Type,
-		ID:   rel,
-	}
-
-	// body, err := jsonapi.Marshal(jsonapi.NewIdentifiers(ctx.URL.Rel.Type, []string{rel}), ctx.URL, ctx.Options)
-
-	return err
-}
-
-// KernelGetRelationships ...
-func KernelGetRelationships(ctx *Ctx) error {
-	// fmt.Printf("REL: %+v\n", ctx.URL.Rel)
-	rels, err := ctx.App.Store.SelectRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.BelongsToFilter.Type)
-	if err != nil {
-		return err
-	}
-	// fmt.Printf("LEN(RELS): %d\n", len(rels))
-
-	ctx.Out.Data = jsonapi.NewIdentifiers(ctx.URL.BelongsToFilter.Type, rels)
-
-	// body, err := jsonapi.Marshal(jsonapi.NewIdentifiers(ctx.URL.Rel.Type, rels), ctx.URL, ctx.Options)
-
-	return err
-}
-
-// KernelInsertRelationships ...
-func KernelInsertRelationships(ctx *Ctx) error {
-	relIDs := ctx.In.Data.(jsonapi.Identifiers)
-
-	err := ctx.App.Store.InsertRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.BelongsToFilter.Type, relIDs.IDs())
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// KernelUpdateRelationship ...
-func KernelUpdateRelationship(ctx *Ctx) error {
-	relID := ctx.In.Data.(jsonapi.Identifier)
-
-	err := ctx.App.Store.UpdateRelationship(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.BelongsToFilter.Type, relID.ID)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// KernelUpdateRelationships ...
-func KernelUpdateRelationships(ctx *Ctx) error {
-	relIDs := ctx.In.Data.(jsonapi.Identifiers)
-
-	err := ctx.App.Store.UpdateRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.BelongsToFilter.Type, relIDs.IDs())
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// KernelDeleteRelationships ...
-func KernelDeleteRelationships(ctx *Ctx) error {
-	relIDs := ctx.In.Data.(jsonapi.Identifiers)
-
-	err := ctx.App.Store.DeleteRelationships(ctx.Tx, ctx.URL.ResType, ctx.URL.ResID, ctx.URL.BelongsToFilter.Name, relIDs.IDs())
-	if err != nil {
-		return err
-	}
-
-	return nil
 }

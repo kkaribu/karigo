@@ -6,246 +6,257 @@ import (
 
 // Access ...
 type Access struct {
-	udpates map[SimpleKey]interface{}
+	udpates map[Key]interface{}
 }
 
 // Ready ...
 func (a *Access) Ready() {}
 
 // Release ...
-func (a Access) Release(key Key, keep ...[]string) {}
+func (a Access) Release(query Query, keep ...[]string) {}
 
 // WillGet ...
-func (a *Access) WillGet(key Key) {}
+func (a *Access) WillGet(query Query) {}
 
 // Get ...
-func (a *Access) Get(key Key) interface{} { return nil }
+func (a *Access) Get(query Query) interface{} { return nil }
 
 // GetString ...
-func (a *Access) GetString(key SimpleKey) string { return "" }
+func (a *Access) GetString(key Key) string { return "" }
 
 // GetInt ...
-func (a *Access) GetInt(key SimpleKey) int { return 0 }
+func (a *Access) GetInt(key Key) int { return 0 }
 
 // GetInt8 ...
-func (a *Access) GetInt8(key SimpleKey) int8 { return 0 }
+func (a *Access) GetInt8(key Key) int8 { return 0 }
 
 // GetInt16 ...
-func (a *Access) GetInt16(key SimpleKey) int16 { return 0 }
+func (a *Access) GetInt16(key Key) int16 { return 0 }
 
 // GetInt32 ...
-func (a *Access) GetInt32(key SimpleKey) int32 { return 0 }
+func (a *Access) GetInt32(key Key) int32 { return 0 }
 
 // GetInt64 ...
-func (a *Access) GetInt64(key SimpleKey) int64 { return 0 }
+func (a *Access) GetInt64(key Key) int64 { return 0 }
 
 // GetUint ...
-func (a *Access) GetUint(key SimpleKey) uint { return 0 }
+func (a *Access) GetUint(key Key) uint { return 0 }
 
 // GetUint8 ...
-func (a *Access) GetUint8(key SimpleKey) uint8 { return 0 }
+func (a *Access) GetUint8(key Key) uint8 { return 0 }
 
 // GetUint16 ...
-func (a *Access) GetUint16(key SimpleKey) uint16 { return 0 }
+func (a *Access) GetUint16(key Key) uint16 { return 0 }
 
 // GetUint32 ...
-func (a *Access) GetUint32(key SimpleKey) uint32 { return 0 }
+func (a *Access) GetUint32(key Key) uint32 { return 0 }
 
 // GetUint64 ...
-func (a *Access) GetUint64(key SimpleKey) uint64 { return 0 }
+func (a *Access) GetUint64(key Key) uint64 { return 0 }
 
 // GetBool ...
-func (a *Access) GetBool(key SimpleKey) bool { return false }
+func (a *Access) GetBool(key Key) bool { return false }
 
 // GetTime ...
-func (a *Access) GetTime(key SimpleKey) time.Time { return time.Time{} }
+func (a *Access) GetTime(key Key) time.Time { return time.Time{} }
 
 // GetStringPtr ...
-func (a *Access) GetStringPtr(key SimpleKey) *string { return nil }
+func (a *Access) GetStringPtr(key Key) *string { return nil }
 
 // GetIntPtr ...
-func (a *Access) GetIntPtr(key SimpleKey) *int { return nil }
+func (a *Access) GetIntPtr(key Key) *int { return nil }
 
 // GetInt8Ptr ...
-func (a *Access) GetInt8Ptr(key SimpleKey) *int8 { return nil }
+func (a *Access) GetInt8Ptr(key Key) *int8 { return nil }
 
 // GetInt16Ptr ...
-func (a *Access) GetInt16Ptr(key SimpleKey) *int16 { return nil }
+func (a *Access) GetInt16Ptr(key Key) *int16 { return nil }
 
 // GetInt32Ptr ...
-func (a *Access) GetInt32Ptr(key SimpleKey) *int32 { return nil }
+func (a *Access) GetInt32Ptr(key Key) *int32 { return nil }
 
 // GetInt64Ptr ...
-func (a *Access) GetInt64Ptr(key SimpleKey) *int64 { return nil }
+func (a *Access) GetInt64Ptr(key Key) *int64 { return nil }
 
 // GetUintPtr ...
-func (a *Access) GetUintPtr(key SimpleKey) *uint { return nil }
+func (a *Access) GetUintPtr(key Key) *uint { return nil }
 
 // GetUint8Ptr ...
-func (a *Access) GetUint8Ptr(key SimpleKey) *uint8 { return nil }
+func (a *Access) GetUint8Ptr(key Key) *uint8 { return nil }
 
 // GetUint16Ptr ...
-func (a *Access) GetUint16Ptr(key SimpleKey) *uint16 { return nil }
+func (a *Access) GetUint16Ptr(key Key) *uint16 { return nil }
 
 // GetUint32Ptr ...
-func (a *Access) GetUint32Ptr(key SimpleKey) *uint32 { return nil }
+func (a *Access) GetUint32Ptr(key Key) *uint32 { return nil }
 
 // GetUint64Ptr ...
-func (a *Access) GetUint64Ptr(key SimpleKey) *uint64 { return nil }
+func (a *Access) GetUint64Ptr(key Key) *uint64 { return nil }
 
 // GetBoolPtr ...
-func (a *Access) GetBoolPtr(key SimpleKey) *bool { return nil }
+func (a *Access) GetBoolPtr(key Key) *bool { return nil }
 
 // GetTimePtr ...
-func (a *Access) GetTimePtr(key SimpleKey) *time.Time { return nil }
-
-// GetResFields ...
-func (a *Access) GetResFields(key Key) map[string]interface{} {
-	return map[string]interface{}{}
-}
-
-// GetSlice ...
-func (a *Access) GetSlice(key Key) []interface{} {
-	return []interface{}{}
-}
+func (a *Access) GetTimePtr(key Key) *time.Time { return nil }
 
 // GetStrings ...
-func (a *Access) GetStrings(key Key) []string {
+func (a *Access) GetStrings(query Query) []string {
 	return []string{}
 }
 
+// GetResFields ...
+func (a *Access) GetResFields(query Query) map[string]interface{} {
+	return map[string]interface{}{}
+}
+
 // GetInts ...
-func (a *Access) GetInts(key Key) []int {
+func (a *Access) GetInts(query Query) []int {
 	return []int{}
 }
 
 // GetInt8s ...
-func (a *Access) GetInt8s(key Key) []int8 {
+func (a *Access) GetInt8s(query Query) []int8 {
 	return []int8{}
 }
 
 // GetInt16s ...
-func (a *Access) GetInt16s(key Key) []int16 {
+func (a *Access) GetInt16s(query Query) []int16 {
 	return []int16{}
 }
 
 // GetInt32s ...
-func (a *Access) GetInt32s(key Key) []int32 {
+func (a *Access) GetInt32s(query Query) []int32 {
 	return []int32{}
 }
 
 // GetInt64s ...
-func (a *Access) GetInt64s(key Key) []int64 {
+func (a *Access) GetInt64s(query Query) []int64 {
 	return []int64{}
 }
 
 // GetUints ...
-func (a *Access) GetUints(key Key) []uint {
+func (a *Access) GetUints(query Query) []uint {
 	return []uint{}
 }
 
 // GetUint8s ...
-func (a *Access) GetUint8s(key Key) []uint8 {
+func (a *Access) GetUint8s(query Query) []uint8 {
 	return []uint8{}
 }
 
 // GetUint16s ...
-func (a *Access) GetUint16s(key Key) []uint16 {
+func (a *Access) GetUint16s(query Query) []uint16 {
 	return []uint16{}
 }
 
 // GetUint32s ...
-func (a *Access) GetUint32s(key Key) []uint32 {
+func (a *Access) GetUint32s(query Query) []uint32 {
 	return []uint32{}
 }
 
 // GetUint64s ...
-func (a *Access) GetUint64s(key Key) []uint64 {
+func (a *Access) GetUint64s(query Query) []uint64 {
 	return []uint64{}
 }
 
 // GetBools ...
-func (a *Access) GetBools(key Key) []bool {
+func (a *Access) GetBools(query Query) []bool {
 	return []bool{}
 }
 
 // GetTimes ...
-func (a *Access) GetTimes(key Key) []time.Time {
+func (a *Access) GetTimes(query Query) []time.Time {
 	return []time.Time{}
 }
 
 // GetStringPtrs ...
-func (a *Access) GetStringPtrs(key Key) []*string {
+func (a *Access) GetStringPtrs(query Query) []*string {
 	return []*string{}
 }
 
 // GetIntPtrs ...
-func (a *Access) GetIntPtrs(key Key) []*int {
+func (a *Access) GetIntPtrs(query Query) []*int {
 	return []*int{}
 }
 
 // GetInt8Ptrs ...
-func (a *Access) GetInt8Ptrs(key Key) []*int8 {
+func (a *Access) GetInt8Ptrs(query Query) []*int8 {
 	return []*int8{}
 }
 
 // GetInt16Ptrs ...
-func (a *Access) GetInt16Ptrs(key Key) []*int16 {
+func (a *Access) GetInt16Ptrs(query Query) []*int16 {
 	return []*int16{}
 }
 
 // GetInt32Ptrs ...
-func (a *Access) GetInt32Ptrs(key Key) []*int32 {
+func (a *Access) GetInt32Ptrs(query Query) []*int32 {
 	return []*int32{}
 }
 
 // GetInt64Ptrs ...
-func (a *Access) GetInt64Ptrs(key Key) []*int64 {
+func (a *Access) GetInt64Ptrs(query Query) []*int64 {
 	return []*int64{}
 }
 
 // GetUintPtrs ...
-func (a *Access) GetUintPtrs(key Key) []*uint {
+func (a *Access) GetUintPtrs(query Query) []*uint {
 	return []*uint{}
 }
 
 // GetUint8Ptrs ...
-func (a *Access) GetUint8Ptrs(key Key) []*uint8 {
+func (a *Access) GetUint8Ptrs(query Query) []*uint8 {
 	return []*uint8{}
 }
 
 // GetUint16Ptrs ...
-func (a *Access) GetUint16Ptrs(key Key) []*uint16 {
+func (a *Access) GetUint16Ptrs(query Query) []*uint16 {
 	return []*uint16{}
 }
 
 // GetUint32Ptrs ...
-func (a *Access) GetUint32Ptrs(key Key) []*uint32 {
+func (a *Access) GetUint32Ptrs(query Query) []*uint32 {
 	return []*uint32{}
 }
 
 // GetUint64Ptrs ...
-func (a *Access) GetUint64Ptrs(key Key) []*uint64 {
+func (a *Access) GetUint64Ptrs(query Query) []*uint64 {
 	return []*uint64{}
 }
 
 // GetBoolPtrs ...
-func (a *Access) GetBoolPtrs(key Key) []*bool {
+func (a *Access) GetBoolPtrs(query Query) []*bool {
 	return []*bool{}
 }
 
 // GetTimePtrs ...
-func (a *Access) GetTimePtrs(key Key) []*time.Time {
+func (a *Access) GetTimePtrs(query Query) []*time.Time {
 	return []*time.Time{}
 }
 
 // GetColFields ...
-func (a *Access) GetColFields(key Key) []map[string]interface{} {
+func (a *Access) GetColFields(query Query) []map[string]interface{} {
 	return []map[string]interface{}{}
 }
 
+// GetInclusions ...
+func (a *Access) GetInclusions(query Query, rels, fields []string) map[string]map[string]interface{} {
+	return map[string]map[string]interface{}{}
+}
+
+// GetSlice ...
+// TODO What is that
+// func (a *Access) GetSlice(query Query) []interface{} {
+// 	return []interface{}{}
+// }
+
+// Count ...
+func (a *Access) Count(query Query) int {
+	return 0
+}
+
 // WillSet ...
-func (a *Access) WillSet(key Key) {}
+func (a *Access) WillSet(query Query) {}
 
 // Set ...
 func (a *Access) Set(typ, id, field string, v interface{}) {}

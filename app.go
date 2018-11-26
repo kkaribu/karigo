@@ -227,13 +227,6 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// jctx, _ := json.MarshalIndent(ctx, "", "  ")
 	// fmt.Printf("CONTEXT\n\n%s\n", jctx)
 
-	// Begin transaction
-	tx, err := a.Store.Begin()
-	if err != nil {
-		panic(jsonapi.NewErrInternalServerError())
-	}
-	ctx.Tx = tx
-
 	// Execute kernel
 	a.executeKernel(ctx)
 
@@ -255,10 +248,7 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx.AddToLog("Document checked.")
 
 	// Commit transaction
-	err = ctx.Tx.Commit()
-	if err != nil {
-		panic("could not commit transaction")
-	}
+	ctx.Tx(a.Log.NewAccess())
 
 	w.WriteHeader(http.StatusOK)
 	w.Write(body)

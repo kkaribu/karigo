@@ -97,7 +97,7 @@ func NewMockApp() *App {
 
 	app.Registry = jsonapi.NewMockRegistry()
 
-	app.Get("/mocktypes3", KernelGetCollection, GatePublic)
+	// app.Get("/mocktypes3", KernelGetCollection, GatePublic)
 
 	return app
 }

@@ -36,6 +36,11 @@ type Op struct {
 	val   interface{}
 }
 
+// NewAccess ...
+func (l *Log) NewAccess() *Access {
+	return &Access{}
+}
+
 // Execute ...
 func (l *Log) Execute(func(*Access)) error { return nil }
 
