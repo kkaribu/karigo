@@ -14,15 +14,17 @@ type Action interface {
  */
 
 // ActionGetCollectionSize ...
-func ActionGetCollectionSize(query Query, size *int) func(*Access) {
-	return func(acc *Access) {
+func ActionGetCollectionSize(query Query, size *int) func(*Access) error {
+	return func(acc *Access) error {
 		*size = acc.Count(query)
+
+		return nil
 	}
 }
 
 // ActionGetCollection ...
-func ActionGetCollection(query Query, col jsonapi.Collection) func(*Access) {
-	return func(acc *Access) {
+func ActionGetCollection(query Query, col jsonapi.Collection) func(*Access) error {
+	return func(acc *Access) error {
 		data := acc.GetColFields(query)
 
 		baseRes := col.Sample()
@@ -33,23 +35,27 @@ func ActionGetCollection(query Query, col jsonapi.Collection) func(*Access) {
 			}
 			col.Add(newRes)
 		}
+
+		return nil
 	}
 }
 
 // ActionGetResource ...
-func ActionGetResource(query Query, res jsonapi.Resource) func(*Access) {
-	return func(acc *Access) {
+func ActionGetResource(query Query, res jsonapi.Resource) func(*Access) error {
+	return func(acc *Access) error {
 		data := acc.GetResFields(query)
 
 		for f, val := range data {
 			res.Set(f, val)
 		}
+
+		return nil
 	}
 }
 
 // ActionGetInclusions ...
-func ActionGetInclusions(query Query, rels, fields []string, col jsonapi.Collection) func(*Access) {
-	return func(acc *Access) {
+func ActionGetInclusions(query Query, rels, fields []string, col jsonapi.Collection) func(*Access) error {
+	return func(acc *Access) error {
 		data := acc.GetInclusions(query, rels, fields)
 
 		var res jsonapi.Resource
@@ -61,12 +67,14 @@ func ActionGetInclusions(query Query, rels, fields []string, col jsonapi.Collect
 			}
 			col.Add(res)
 		}
+
+		return nil
 	}
 }
 
 // ActionInsertResource ...
-func ActionInsertResource(res jsonapi.Resource) func(*Access) {
-	return func(acc *Access) {
+func ActionInsertResource(res jsonapi.Resource) func(*Access) error {
+	return func(acc *Access) error {
 		id, typ := res.IDAndType()
 		for _, attr := range res.Attrs() {
 			acc.Set(typ, id, attr.Name, res.Get(attr.Name))
@@ -78,21 +86,27 @@ func ActionInsertResource(res jsonapi.Resource) func(*Access) {
 				acc.SetToManyRel(typ, id, rel.Name, res.GetToMany(rel.Name)...)
 			}
 		}
+
+		return nil
 	}
 }
 
 // ActionUpdateResource ...
-func ActionUpdateResource(typ, id string, vals map[string]interface{}) func(*Access) {
-	return func(acc *Access) {
+func ActionUpdateResource(typ, id string, vals map[string]interface{}) func(*Access) error {
+	return func(acc *Access) error {
 		for field, val := range vals {
 			acc.Set(typ, id, field, val)
 		}
+
+		return nil
 	}
 }
 
 // ActionDeleteResource ...
-func ActionDeleteResource(typ, id string) func(*Access) {
-	return func(acc *Access) {
+func ActionDeleteResource(typ, id string) func(*Access) error {
+	return func(acc *Access) error {
 		acc.Set(typ, id, "id", "")
+
+		return nil
 	}
 }

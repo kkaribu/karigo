@@ -2,8 +2,9 @@ package karigo
 
 // Log ...
 type Log struct {
-	seq int
-	log []Entry
+	drivers []Driver
+	seq     uint
+	log     []Entry
 }
 
 // NewLog ...
@@ -38,14 +39,35 @@ type Op struct {
 
 // NewAccess ...
 func (l *Log) NewAccess() *Access {
-	return &Access{}
+	return &Access{
+		drivers: []Driver{},
+		ops:     []Op{},
+	}
 }
 
 // Execute ...
-func (l *Log) Execute(func(*Access)) error { return nil }
+func (l *Log) Execute(f func(*Access) error) error {
+	acc := l.NewAccess()
+	err := f(acc)
+	return err
+}
 
 // ReadAsync ...
-func (l *Log) ReadAsync(func(*Access)) error { return nil }
+func (l *Log) ReadAsync(f func(*Access) error) error {
+	acc := l.NewAccess()
+	err := f(acc)
+	if err != nil {
+		return err
+	}
+
+	l.log = append(l.log, Entry{
+		seq: l.seq,
+		id:  "", // TODO
+		ops: acc.ops,
+	})
+
+	return err
+}
 
 // LastSequence ...
-func (l *Log) LastSequence() int { return l.seq }
+func (l *Log) LastSequence() uint { return l.seq }

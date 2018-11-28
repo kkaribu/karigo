@@ -6,7 +6,9 @@ import (
 
 // Access ...
 type Access struct {
-	udpates map[Key]interface{}
+	resProviders []ResProvider
+	colProviders []ColProvider
+	ops          []Op
 }
 
 // Ready ...
@@ -18,8 +20,11 @@ func (a Access) Release(query Query, keep ...[]string) {}
 // WillGet ...
 func (a *Access) WillGet(query Query) {}
 
-// Get ...
-func (a *Access) Get(query Query) interface{} { return nil }
+// GetField ...
+func (a *Access) GetField(key Key) interface{} {
+	v := a.resProviders[0].Get(key)
+	return v
+}
 
 // GetString ...
 func (a *Access) GetString(key Key) string { return "" }

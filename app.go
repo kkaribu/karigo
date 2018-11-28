@@ -226,7 +226,7 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// fmt.Printf("CONTEXT\n\n%s\n", jctx)
 
 	// Execute kernel
-	a.executeKernel(ctx)
+	a.executeTx(ctx)
 
 	ctx.AddToLog("Kernel executed.")
 
