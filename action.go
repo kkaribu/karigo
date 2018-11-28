@@ -81,36 +81,18 @@ func ActionInsertResource(res jsonapi.Resource) func(*Access) {
 	}
 }
 
-// ActionkUpdateResource ...
-func ActionkUpdateResource(res jsonapi.Resource) func(*Access) {
+// ActionUpdateResource ...
+func ActionUpdateResource(typ, id string, vals map[string]interface{}) func(*Access) {
 	return func(acc *Access) {
-		id, typ := res.IDAndType()
-		for _, attr := range res.Attrs() {
-			acc.Set(typ, id, attr.Name, res.Get(attr.Name))
-		}
-		for _, rel := range res.Rels() {
-			if rel.ToOne {
-				acc.SetToOneRel(typ, id, rel.Name, res.GetToOne(rel.Name))
-			} else {
-				acc.SetToManyRel(typ, id, rel.Name, res.GetToMany(rel.Name)...)
-			}
+		for field, val := range vals {
+			acc.Set(typ, id, field, val)
 		}
 	}
 }
 
 // ActionDeleteResource ...
-func ActionDeleteResource(res jsonapi.Resource) func(*Access) {
+func ActionDeleteResource(typ, id string) func(*Access) {
 	return func(acc *Access) {
-		id, typ := res.IDAndType()
-		for _, attr := range res.Attrs() {
-			acc.Set(typ, id, attr.Name, res.Get(attr.Name))
-		}
-		for _, rel := range res.Rels() {
-			if rel.ToOne {
-				acc.SetToOneRel(typ, id, rel.Name, res.GetToOne(rel.Name))
-			} else {
-				acc.SetToManyRel(typ, id, rel.Name, res.GetToMany(rel.Name)...)
-			}
-		}
+		acc.Set(typ, id, "id", "")
 	}
 }

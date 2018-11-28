@@ -13,10 +13,10 @@ type Kernel func(ctx *Ctx) error
 func (a *App) executeKernel(ctx *Ctx) {
 	ctx.AddToLog(fmt.Sprintf("Looking for %s.", ctx.Method+" "+ctx.URL.Route))
 
-	var tx func(acc *Access)
+	var tx func(acc *Access) error
 
 	if ctx.Method == "GET" {
-		tx = func(acc *Access) {
+		tx = func(acc *Access) error {
 			if ctx.URL.IsCol {
 				// Get collection
 				var size int
@@ -86,16 +86,30 @@ func (a *App) executeKernel(ctx *Ctx) {
 					ActionGetInclusions(ctx.Query, rels, ctx.URL.Params.Fields[typ], inclusions)(acc)
 				}
 			}
+
+			return nil
 		}
 	} else if ctx.Method == "POST" {
-		tx = func(acc *Access) {}
+		tx = func(acc *Access) error {
+			res := ctx.In.Data.(jsonapi.Resource)
+			ActionInsertResource(res)(acc)
+			return nil
+		}
 	} else if ctx.Method == "PATCH" {
-		tx = func(acc *Access) {}
+		tx = func(acc *Access) error {
+			vals := map[string]interface{}{}
+			ActionUpdateResource(ctx.URL.ResType, ctx.URL.ResID, vals)(acc)
+			return nil
+		}
 	} else if ctx.Method == "DELETE" {
-		tx = func(acc *Access) {}
+		tx = func(acc *Access) error {
+			ActionDeleteResource(ctx.URL.ResType, ctx.URL.ResID)(acc)
+			return nil
+		}
 	}
 
-	ctx.Tx = func(acc *Access) {
+	ctx.Tx = func(acc *Access) error {
 		tx(acc)
+		return nil
 	}
 }
