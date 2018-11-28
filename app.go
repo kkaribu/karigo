@@ -27,7 +27,6 @@ func NewApp(store Store) *App {
 		Registry: jsonapi.NewRegistry(),
 
 		Actions: map[string]Action{},
-		Kernels: map[string]Kernel{},
 		Gates:   map[string][]Gate{},
 	}
 
@@ -50,7 +49,6 @@ type App struct {
 	*jsonapi.Registry
 
 	Actions map[string]Action `json:"-"`
-	Kernels map[string]Kernel `json:"-"`
 	Gates   map[string][]Gate `json:"-"`
 }
 
@@ -254,52 +252,4 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Write(body)
 
 	ctx.AddToLog("Response sent.")
-}
-
-// Get adds a kernel for handling GET requests.
-func (a *App) Get(route string, k Kernel, g ...Gate) {
-	a.Lock()
-	defer a.Unlock()
-
-	a.Kernels["GET "+route] = k
-
-	if g != nil {
-		a.Gates["GET "+route] = g
-	}
-}
-
-// Post adds a kernel for handling POST requests.
-func (a *App) Post(route string, k Kernel, g ...Gate) {
-	a.Lock()
-	defer a.Unlock()
-
-	a.Kernels["POST "+route] = k
-
-	if g != nil {
-		a.Gates["POST "+route] = g
-	}
-}
-
-// Put adds a kernel for handling PUT requests.
-func (a *App) Put(route string, k Kernel, g ...Gate) {
-	a.Lock()
-	defer a.Unlock()
-
-	a.Kernels["PUT "+route] = k
-
-	if g != nil {
-		a.Gates["PUT "+route] = g
-	}
-}
-
-// Delete adds a kernel for handling DELETE requestsn.
-func (a *App) Delete(route string, k Kernel, g ...Gate) {
-	a.Lock()
-	defer a.Unlock()
-
-	a.Kernels["DELETE "+route] = k
-
-	if g != nil {
-		a.Gates["DELETE "+route] = g
-	}
 }

@@ -6,9 +6,6 @@ import (
 	"github.com/kkaribu/jsonapi"
 )
 
-// Kernel ...
-type Kernel func(ctx *Ctx) error
-
 // executeKernel ...
 func (a *App) executeKernel(ctx *Ctx) {
 	ctx.AddToLog(fmt.Sprintf("Looking for %s.", ctx.Method+" "+ctx.URL.Route))
