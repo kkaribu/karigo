@@ -361,3 +361,6 @@ func (a *Access) SetToManyRel(typ, id, field string, ids ...string) {}
 
 // DeleteToManyRel ...
 func (a *Access) DeleteToManyRel(key string, ids ...string) {}
+
+// set ...
+func (a *Access) set(key Key, val interface{}) error { return nil }

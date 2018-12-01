@@ -32,6 +32,7 @@ type Entry struct {
 // Remove to-many rel
 // Set to-many rel
 type Op struct {
+	set   string
 	field string
 	op    string // set, add, rem
 	val   interface{}
@@ -40,8 +41,7 @@ type Op struct {
 // NewAccess ...
 func (l *Log) NewAccess() *Access {
 	return &Access{
-		drivers: []Driver{},
-		ops:     []Op{},
+		ops: []Op{},
 	}
 }
 
