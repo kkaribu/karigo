@@ -1,28 +1,31 @@
 package karigo
 
+import "time"
+
 // Log ...
 type Log struct {
-	drivers []Driver
-	seq     uint
-	log     []Entry
+	sources        []Source
+	seq            uint
+	log            []Entry
+	activeAccesses []*Access
+	// ongoingTx      []FTx
+	// tempLog []
 }
 
-// NewLog ...
-func NewLog() *Log {
-	log := &Log{
-		seq: 0,
-		log: []Entry{},
-	}
+// // NewLog ...
+// func NewLog() *Log {
+// 	log := &Log{
+// 		seq: 0,
+// 		log: []Entry{},
+// 	}
 
-	return log
-}
+// 	return log
+// }
 
 // Entry ...
 type Entry struct {
-	seq    uint
-	id     string
-	values []map[string]interface{}
-	ops    []Op
+	seq uint
+	ops []Op
 }
 
 // Op ...
@@ -35,7 +38,18 @@ type Op struct {
 	set   string
 	field string
 	op    string // set, add, rem
-	val   interface{}
+	val   string
+}
+
+// Run ...
+func (l *Log) Run() error {
+	alive := true
+
+	for alive {
+		time.Sleep(2 * time.Second)
+	}
+
+	return nil
 }
 
 // NewAccess ...
@@ -46,28 +60,29 @@ func (l *Log) NewAccess() *Access {
 }
 
 // Execute ...
-func (l *Log) Execute(f func(*Access) error) error {
+func (l *Log) Execute(f FTx) error {
 	acc := l.NewAccess()
+	l.activeAccesses = append(l.activeAccesses, acc)
 	err := f(acc)
+	acc.done = true
 	return err
 }
 
-// ReadAsync ...
-func (l *Log) ReadAsync(f func(*Access) error) error {
-	acc := l.NewAccess()
-	err := f(acc)
-	if err != nil {
-		return err
-	}
+// // ReadAsync ...
+// func (l *Log) ReadAsync(f func(*Access) error) error {
+// 	acc := l.NewAccess()
+// 	err := f(acc)
+// 	if err != nil {
+// 		return err
+// 	}
 
-	l.log = append(l.log, Entry{
-		seq: l.seq,
-		id:  "", // TODO
-		ops: acc.ops,
-	})
+// 	l.log = append(l.log, Entry{
+// 		seq: l.seq,
+// 		ops: acc.ops,
+// 	})
 
-	return err
-}
+// 	return err
+// }
 
-// LastSequence ...
-func (l *Log) LastSequence() uint { return l.seq }
+// // LastSequence ...
+// func (l *Log) LastSequence() uint { return l.seq }

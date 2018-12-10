@@ -226,9 +226,15 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// fmt.Printf("CONTEXT\n\n%s\n", jctx)
 
 	// Execute kernel
-	a.executeTx(ctx)
+	tx := a.buildTx(ctx)
 
-	ctx.AddToLog("Kernel executed.")
+	// Send transaction
+	err = a.Log.Execute(tx)
+	if err != nil {
+		panic(err)
+	}
+
+	ctx.AddToLog("Transaction executed.")
 
 	// Check Document
 	body, err = jsonapi.Marshal(ctx.Out, ctx.URL)
@@ -244,9 +250,6 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		body = buf.Bytes()
 	}
 	ctx.AddToLog("Document checked.")
-
-	// Commit transaction
-	ctx.Tx(a.Log.NewAccess())
 
 	w.WriteHeader(http.StatusOK)
 	w.Write(body)

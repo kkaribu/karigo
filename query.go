@@ -13,7 +13,7 @@ import (
 // Fields will default to a slice containing the string "id"
 // if nil or empty.
 type Query struct {
-	Type            string
+	Set             string
 	ID              string
 	Fields          []string
 	BelongsToFilter jsonapi.BelongsToFilter
@@ -34,7 +34,7 @@ func NewQuery(url *jsonapi.URL) *Query {
 	}
 
 	query := &Query{
-		Type:            url.ResType,
+		Set:             url.ResType,
 		ID:              url.ResID,
 		Fields:          fields,
 		BelongsToFilter: url.BelongsToFilter,
@@ -45,6 +45,23 @@ func NewQuery(url *jsonapi.URL) *Query {
 	}
 
 	return query
+}
+
+// NewQueryFromKey ...
+func NewQueryFromKey(key Key) *Query {
+	var fields []string
+	if key.Field != "" {
+		fields = make([]string, 1)
+		fields[0] = key.Field
+	} else {
+		fields = []string{}
+	}
+
+	return &Query{
+		Set:    key.Set,
+		ID:     key.ID,
+		Fields: fields,
+	}
 }
 
 // String ...

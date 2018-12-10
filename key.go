@@ -2,7 +2,7 @@ package karigo
 
 // Key ...
 type Key struct {
-	Type  string
+	Set   string
 	ID    string
 	Field string
 }

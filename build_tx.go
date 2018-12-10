@@ -6,8 +6,8 @@ import (
 	"github.com/kkaribu/jsonapi"
 )
 
-// executeTx ...
-func (a *App) executeTx(ctx *Ctx) {
+// buildTx ...
+func (a *App) buildTx(ctx *Ctx) func(*Access) error {
 	ctx.AddToLog(fmt.Sprintf("Looking for %s.", ctx.Method+" "+ctx.URL.Route))
 
 	var tx func(acc *Access) error
@@ -131,7 +131,7 @@ func (a *App) executeTx(ctx *Ctx) {
 		}
 	}
 
-	ctx.Tx = func(acc *Access) error {
+	return func(acc *Access) error {
 		tx(acc)
 		return nil
 	}

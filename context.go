@@ -28,7 +28,6 @@ type Ctx struct {
 	sync.Mutex `json:"-"`
 
 	App *App `json:"-"`
-	Tx  func(acc *Access) error
 
 	// Log
 	Log []string
