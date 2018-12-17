@@ -19,7 +19,6 @@ import (
 // NewApp creates and returns an App object.
 func NewApp(store Store) *App {
 	app := &App{
-		Log:    &Log{},
 		Store:  store,
 		CLI:    cli.NewApp(),
 		Server: http.Server{},
@@ -28,6 +27,8 @@ func NewApp(store Store) *App {
 
 		Actions: map[string]Action{},
 		Gates:   map[string][]Gate{},
+
+		commitQueue: &commitQueue{},
 	}
 
 	app.Config.Store.Options = map[string]string{}
@@ -41,7 +42,6 @@ type App struct {
 	sync.Mutex
 
 	Config Config
-	Log    *Log        `json:"-"`
 	Store  Store       `json:"-"`
 	CLI    *cli.App    `json:"-"`
 	Server http.Server `json:"-"`
@@ -50,6 +50,8 @@ type App struct {
 
 	Actions map[string]Action `json:"-"`
 	Gates   map[string][]Gate `json:"-"`
+
+	commitQueue *commitQueue
 }
 
 // Info ...
@@ -229,9 +231,18 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	tx := a.buildTx(ctx)
 
 	// Send transaction
-	err = a.Log.Execute(tx)
+	acc, err := a.commitQueue.Execute(tx)
 	if err != nil {
 		panic(err)
+	}
+
+	if ctx.Method == "GET" || ctx.Method == "POST" || ctx.Method == "PATCH" {
+		for i := range acc.affected {
+			id, typ := acc.affected[i].IDAndType()
+			if typ == ctx.Query.Set && id == ctx.Query.ID {
+				ctx.Out.Data = acc.affected[i]
+			}
+		}
 	}
 
 	ctx.AddToLog("Transaction executed.")

@@ -132,7 +132,7 @@ func (a *App) buildTx(ctx *Ctx) func(*Access) error {
 	}
 
 	return func(acc *Access) error {
-		tx(acc)
-		return nil
+		err := tx(acc)
+		return err
 	}
 }

@@ -2,36 +2,33 @@ package karigo
 
 import (
 	"time"
+
+	"github.com/kkaribu/jsonapi"
 )
 
 // Access ...
 type Access struct {
-	deps   []dep
-	values map[Key]string
-	ops    []Op
-	done   bool
-}
-
-type dep struct {
-	query *Query
-	val   chan string
+	deps     []Query
+	affected []jsonapi.Resource
+	ops      []Op
+	done     bool
 }
 
 // Ready ...
 // func (a *Access) Ready() {}
 
 // Release ...
-func (a Access) Release(query Query, keep ...[]string) {}
+func (a *Access) Release(query Query, keep ...[]string) {}
+
+// Operate ...
+func (a *Access) Operate(op Op) {}
 
 // WillGet ...
 func (a *Access) WillGet(query Query) {}
 
 // GetField ...
 func (a *Access) GetField(key Key) string {
-	a.deps = append(a.deps, dep{
-		query: NewQueryFromKey(key),
-		val:   make(chan string),
-	})
+	a.deps = append(a.deps, Query{})
 	return ""
 }
 

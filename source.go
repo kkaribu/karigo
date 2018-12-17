@@ -2,14 +2,7 @@ package karigo
 
 // Source ...
 type Source interface {
-	Get(Query) string
+	Field(Query) (string, error)
+	Fields(Query) ([][]string, error)
+	Apply([]Op) error
 }
-
-// // ResProvider ...
-// type ResProvider interface {
-// 	Get(Key) string
-// }
-
-// // ColProvider ...
-// type ColProvider interface {
-// }
