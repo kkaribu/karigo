@@ -6,7 +6,15 @@ import (
 
 // Action ...
 type Action interface {
-	Execute(a *Access)
+	Execute(a *Access) error
+}
+
+// ActionFunc ...
+type ActionFunc func(*Access) error
+
+// Execute ...
+func (f ActionFunc) Execute(acc *Access) error {
+	return f(acc)
 }
 
 /*

@@ -7,10 +7,10 @@ import (
 )
 
 // buildTx ...
-func (a *App) buildTx(ctx *Ctx) func(*Access) error {
+func (a *App) buildTx(ctx *Ctx) Action {
 	ctx.AddToLog(fmt.Sprintf("Looking for %s.", ctx.Method+" "+ctx.URL.Route))
 
-	var tx func(acc *Access) error
+	var tx ActionFunc
 
 	if ctx.Method == "GET" {
 		tx = func(acc *Access) error {
@@ -131,8 +131,8 @@ func (a *App) buildTx(ctx *Ctx) func(*Access) error {
 		}
 	}
 
-	return func(acc *Access) error {
+	return ActionFunc(func(acc *Access) error {
 		err := tx(acc)
 		return err
-	}
+	})
 }
