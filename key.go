@@ -2,10 +2,9 @@ package karigo
 
 // Key ...
 type Key struct {
-	Namespace string
-	Set       string
-	ID        string
-	Field     string
+	Set   string
+	ID    string
+	Field string
 }
 
 // String ...

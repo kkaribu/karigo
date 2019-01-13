@@ -33,7 +33,7 @@ func ActionGetCollectionSize(query Query, size *int) func(*Access) error {
 // ActionGetCollection ...
 func ActionGetCollection(query Query, col jsonapi.Collection) func(*Access) error {
 	return func(acc *Access) error {
-		data := acc.GetColFields(query)
+		data := acc.GetCol(query)
 
 		baseRes := col.Sample()
 		for _, m := range data {
@@ -51,7 +51,7 @@ func ActionGetCollection(query Query, col jsonapi.Collection) func(*Access) erro
 // ActionGetResource ...
 func ActionGetResource(query Query, res jsonapi.Resource) func(*Access) error {
 	return func(acc *Access) error {
-		data := acc.GetResFields(query)
+		data := acc.GetRes(query)
 
 		for f, val := range data {
 			res.Set(f, val)
@@ -85,13 +85,13 @@ func ActionInsertResource(res jsonapi.Resource) func(*Access) error {
 	return func(acc *Access) error {
 		id, typ := res.IDAndType()
 		for _, attr := range res.Attrs() {
-			acc.Set(typ, id, attr.Name, res.Get(attr.Name))
+			acc.Do(Op{Set: typ, ID: id, Field: attr.Name, Op: "set", Val: res.Get(attr.Name)})
 		}
 		for _, rel := range res.Rels() {
 			if rel.ToOne {
-				acc.SetToOneRel(typ, id, rel.Name, res.GetToOne(rel.Name))
+				acc.Do(Op{Set: typ, ID: id, Field: rel.Name, Op: "set", Val: res.GetToOne(rel.Name)})
 			} else {
-				acc.SetToManyRel(typ, id, rel.Name, res.GetToMany(rel.Name)...)
+				acc.Do(Op{Set: typ, ID: id, Field: rel.Name, Op: "set", Val: res.GetToMany(rel.Name)})
 			}
 		}
 
@@ -103,7 +103,7 @@ func ActionInsertResource(res jsonapi.Resource) func(*Access) error {
 func ActionUpdateResource(typ, id string, vals map[string]interface{}) func(*Access) error {
 	return func(acc *Access) error {
 		for field, val := range vals {
-			acc.Set(typ, id, field, val)
+			acc.Do(Op{Set: typ, ID: id, Field: field, Op: "set", Val: val})
 		}
 
 		return nil
@@ -113,7 +113,7 @@ func ActionUpdateResource(typ, id string, vals map[string]interface{}) func(*Acc
 // ActionDeleteResource ...
 func ActionDeleteResource(typ, id string) func(*Access) error {
 	return func(acc *Access) error {
-		acc.Set(typ, id, "id", "")
+		acc.Do(Op{Set: typ, ID: id, Field: "id", Op: "set", Val: ""})
 
 		return nil
 	}

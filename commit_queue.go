@@ -26,10 +26,11 @@ type commitQueue struct {
 // Remove to-many rel
 // Set to-many rel
 type Op struct {
-	set   string
-	field string
-	op    string // set, add, rem
-	val   string
+	Set   string
+	ID    string
+	Field string
+	Op    string // set, add, rem
+	Val   interface{}
 }
 
 // run ...

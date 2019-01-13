@@ -4,9 +4,10 @@ import (
 	"github.com/kkaribu/jsonapi"
 )
 
-// Query represents a resource or a collection.
+// Query is a set of parameters that represent a collection or a
+// single resource.
 //
-// To get a resource, only Type and ID are used.
+// To get a resource, ID is necessary.
 // To get a collection, all fields except ID are considered.
 //
 // Filter is not necessary.
