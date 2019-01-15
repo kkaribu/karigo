@@ -58,46 +58,46 @@ func TestCLI(t *testing.T) {
 	})
 
 	err := cliApp.Run([]string{"karigo"})
-	tchek.ErrorExpected(t, 0, false, err)
+	tchek.ErrorExpected(t, "karigo", false, err)
 
 	err = cliApp.Run([]string{"karigo", "help"})
-	tchek.ErrorExpected(t, 1, false, err)
+	tchek.ErrorExpected(t, "karigo help", false, err)
 
 	err = cliApp.Run([]string{"karigo", "--config=tests/invalid.json"})
-	tchek.ErrorExpected(t, 2, true, err)
+	tchek.ErrorExpected(t, "karigo invalid config", true, err)
 
 	err = cliApp.Run([]string{"karigo", "schema"})
-	tchek.ErrorExpected(t, 3, true, err)
+	tchek.ErrorExpected(t, "karigo schema", true, err)
 
 	err = cliApp.Run([]string{"karigo", "schema", "--config"})
-	tchek.ErrorExpected(t, 4, true, err)
+	tchek.ErrorExpected(t, "karigo schema config", true, err)
 
 	err = cliApp.Run([]string{"karigo", "schema", "--config="})
-	tchek.ErrorExpected(t, 5, true, err)
+	tchek.ErrorExpected(t, "karigo schema config 2", true, err)
 
 	err = cliApp.Run([]string{"karigo", "schema", "--config=tests/invalid.json"})
-	tchek.ErrorExpected(t, 6, true, err)
+	tchek.ErrorExpected(t, "karigo schema non-existent config", true, err)
 
 	err = cliApp.Run([]string{"karigo", "schema", "--config", "tests/invalid.json"})
-	tchek.ErrorExpected(t, 7, true, err)
+	tchek.ErrorExpected(t, "karigo schema non-existent config 2", true, err)
 
 	err = cliApp.Run([]string{"karigo", "schema", "--config=tests/config_valid1.json"})
-	tchek.ErrorExpected(t, 8, false, err)
+	tchek.ErrorExpected(t, "karigo schema config", false, err)
 
 	err = cliApp.Run([]string{"karigo", "schema", "--config=tests/config_valid2.json"})
-	tchek.ErrorExpected(t, 9, false, err)
+	tchek.ErrorExpected(t, "karigo schema config 2", false, err)
 
 	err = cliApp.Run([]string{"karigo", "schema", "--config", "tests/config_valid1.json"})
-	tchek.ErrorExpected(t, 10, false, err)
+	tchek.ErrorExpected(t, "karigo schema config 3", false, err)
 
 	err = cliApp.Run([]string{"karigo", "schema", "--config", "tests/config_invalid1.json"})
-	tchek.ErrorExpected(t, 11, true, err)
+	tchek.ErrorExpected(t, "karigo schema invald config", true, err)
 
 	err = cliApp.Run([]string{"karigo", "schema", "--config", "tests/config_invalid2.json"})
-	tchek.ErrorExpected(t, 12, true, err)
+	tchek.ErrorExpected(t, "karigo schema invald config 2", true, err)
 
 	err = cliApp.Run([]string{"karigo", "schema", "--config", "tests/config_invalid3.json"})
-	tchek.ErrorExpected(t, 13, true, err)
+	tchek.ErrorExpected(t, "karigo schema invald config 3", true, err)
 
 	cliApp = makeCLIAppWithMockStore(&MockStore{
 		OpenFunc: func(driver, host, db, user, pw string, opts map[string]string) error {
@@ -106,14 +106,14 @@ func TestCLI(t *testing.T) {
 	})
 
 	err = cliApp.Run([]string{"karigo", "schema", "--config", "tests/config_valid1.json"})
-	tchek.ErrorExpected(t, 14, true, err)
+	tchek.ErrorExpected(t, "karigo schema connection error", true, err)
 
 	invalidApp := NewMockApp()
 	invalidApp.RegisterType(InvalidType1{})
 	cliApp.Metadata["app"] = invalidApp
 
 	err = cliApp.Run([]string{"karigo", "schema", "--config", "tests/config_valid1.json"})
-	tchek.ErrorExpected(t, 15, true, err)
+	tchek.ErrorExpected(t, "karigo schema invalid app", true, err)
 }
 
 func TestCheckCmd(t *testing.T) {
@@ -126,7 +126,7 @@ func TestCheckCmd(t *testing.T) {
 	})
 
 	err := cliApp.Run([]string{"karigo", "check", "--config=tests/config_valid1.json"})
-	tchek.ErrorExpected(t, 0, false, err)
+	tchek.ErrorExpected(t, "karigo check successful sync", false, err)
 
 	cliApp = makeCLIAppWithMockStore(&MockStore{
 		SyncDatabaseFunc: func(tx Tx, reg *jsonapi.Registry, verbose, apply bool) error {
@@ -135,10 +135,10 @@ func TestCheckCmd(t *testing.T) {
 	})
 
 	err = cliApp.Run([]string{"karigo", "check", "--config=tests/config_valid1.json"})
-	tchek.ErrorExpected(t, 1, true, err)
+	tchek.ErrorExpected(t, "karigo check sync error", true, err)
 
 	err = cliApp.Run([]string{"karigo", "check", "--config", "tests/invalid.json"})
-	tchek.ErrorExpected(t, 2, true, err)
+	tchek.ErrorExpected(t, "karigo check non-existent config", true, err)
 }
 
 func TestDrainCmd(t *testing.T) {
@@ -151,7 +151,7 @@ func TestDrainCmd(t *testing.T) {
 	})
 
 	err := cliApp.Run([]string{"karigo", "drain", "--config=tests/config_valid1.json"})
-	tchek.ErrorExpected(t, 0, false, err)
+	tchek.ErrorExpected(t, "karigo drain successful drain", false, err)
 
 	cliApp = makeCLIAppWithMockStore(&MockStore{
 		DrainDatabaseFunc: func(tx Tx) error {
@@ -160,10 +160,10 @@ func TestDrainCmd(t *testing.T) {
 	})
 
 	err = cliApp.Run([]string{"karigo", "drain", "--config=tests/config_valid1.json"})
-	tchek.ErrorExpected(t, 1, true, err)
+	tchek.ErrorExpected(t, "karigo drain drain error", true, err)
 
 	err = cliApp.Run([]string{"karigo", "drain", "--config", "tests/invalid.json"})
-	tchek.ErrorExpected(t, 2, true, err)
+	tchek.ErrorExpected(t, "karigo drain non-existent config", true, err)
 }
 
 func TestRunCmd(t *testing.T) {
@@ -186,11 +186,11 @@ func TestRunCmd(t *testing.T) {
 		c <- true
 	}()
 	err := cliApp.Run([]string{"karigo", "run", "--config=tests/config_valid2.json"})
-	tchek.ErrorExpected(t, 0, false, err)
+	tchek.ErrorExpected(t, "karigo run successful", false, err)
 	<-c
 
 	err = cliApp.Run([]string{"karigo", "run", "--config", "tests/invalid.json"})
-	tchek.ErrorExpected(t, 1, true, err)
+	tchek.ErrorExpected(t, "karigo run non-existent config", true, err)
 }
 
 func TestSchemaCmd(t *testing.T) {
@@ -199,5 +199,5 @@ func TestSchemaCmd(t *testing.T) {
 	cliApp := makeCLIAppWithMockStore(&MockStore{})
 
 	err := cliApp.Run([]string{"karigo", "schema", "--config=tests/config_valid1.json"})
-	tchek.ErrorExpected(t, 0, false, err)
+	tchek.ErrorExpected(t, "karigo schema successful", false, err)
 }

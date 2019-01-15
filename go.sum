@@ -8,6 +8,8 @@ github.com/kkaribu/jsonapi v0.4.0 h1:iBildLQQVW5WEws/LiOAdNSIUg1BCAGl11ij0qKNUaU
 github.com/kkaribu/jsonapi v0.4.0/go.mod h1:fA9CsCabLKBoWbgQklal+LKlP0JsPi5QwXhZiTh76gA=
 github.com/kkaribu/tchek v0.1.0 h1:9fyrkkWUgSuzG4N8JQoWbb9ecKdhNpb856MT83E3ygk=
 github.com/kkaribu/tchek v0.1.0/go.mod h1:SqTNgQxZ+DXsMmE2v0nUCqQjXnEG2bavXi0dQwDPBcs=
+github.com/kkaribu/tchek v0.2.0 h1:/VcfPCGHbMbVvWqH+LFXniJmaCBodSocyh9u0n8k4bQ=
+github.com/kkaribu/tchek v0.2.0/go.mod h1:SqTNgQxZ+DXsMmE2v0nUCqQjXnEG2bavXi0dQwDPBcs=
 github.com/myesui/uuid v1.0.0 h1:xCBmH4l5KuvLYc5L7AS7SZg9/jKdIFubM7OVoLqaQUI=
 github.com/myesui/uuid v1.0.0/go.mod h1:2CDfNgU0LR8mIdO8vdWd8i9gWWxLlcoIGGpSNgafq84=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
