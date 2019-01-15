@@ -4,10 +4,8 @@ github.com/dchest/uniuri v0.0.0-20160212164326-8902c56451e9 h1:74lLNRzvsdIlkTgfD
 github.com/dchest/uniuri v0.0.0-20160212164326-8902c56451e9/go.mod h1:GgB8SF9nRG+GqaDtLcwJZsQFhcogVCJ79j4EdT0c2V4=
 github.com/dgrijalva/jwt-go v2.7.0+incompatible h1:54T2qn/iIwjg7JGrMsKD3WID0+CaYUrJgyXDM5ckYLk=
 github.com/dgrijalva/jwt-go v2.7.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=
-github.com/kkaribu/jsonapi v0.4.0 h1:iBildLQQVW5WEws/LiOAdNSIUg1BCAGl11ij0qKNUaU=
-github.com/kkaribu/jsonapi v0.4.0/go.mod h1:fA9CsCabLKBoWbgQklal+LKlP0JsPi5QwXhZiTh76gA=
-github.com/kkaribu/tchek v0.1.0 h1:9fyrkkWUgSuzG4N8JQoWbb9ecKdhNpb856MT83E3ygk=
-github.com/kkaribu/tchek v0.1.0/go.mod h1:SqTNgQxZ+DXsMmE2v0nUCqQjXnEG2bavXi0dQwDPBcs=
+github.com/kkaribu/jsonapi v0.5.0 h1:hGpHMlcpHt2wClGJ7lzesBZM6Qc8kJnVuQlvkSAZvJs=
+github.com/kkaribu/jsonapi v0.5.0/go.mod h1:uowbBjiTgmcvvahxwV0zJuJzUzqe/+vmhW1S3WbVuF0=
 github.com/kkaribu/tchek v0.2.0 h1:/VcfPCGHbMbVvWqH+LFXniJmaCBodSocyh9u0n8k4bQ=
 github.com/kkaribu/tchek v0.2.0/go.mod h1:SqTNgQxZ+DXsMmE2v0nUCqQjXnEG2bavXi0dQwDPBcs=
 github.com/myesui/uuid v1.0.0 h1:xCBmH4l5KuvLYc5L7AS7SZg9/jKdIFubM7OVoLqaQUI=
@@ -16,8 +14,6 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/rs/cors v1.6.0 h1:G9tHG9lebljV9mfp9SNPDL36nCDxmo3zTlAf1YgvzmI=
 github.com/rs/cors v1.6.0/go.mod h1:gFx+x8UowdsKA9AchylcLynDq+nNFfI8FkUZdN/jGCU=
-github.com/twinj/uuid v1.0.0 h1:fzz7COZnDrXGTAOHGuUGYd6sG+JMq+AoE7+Jlu0przk=
-github.com/twinj/uuid v1.0.0/go.mod h1:mMgcE1RHFUFqe5AfiwlINXisXfDGro23fWdPUfOMjRY=
 github.com/urfave/cli v1.20.0 h1:fDqGv3UG/4jbVl/QkFwEdddtEDjh/5Ov6X+0B/3bPaw=
 github.com/urfave/cli v1.20.0/go.mod h1:70zkFmudgCuE/ngEzBv17Jvp/497gISqfk5gWijbERA=
 golang.org/x/crypto v0.0.0-20181030102418-4d3f4d9ffa16 h1:y6ce7gCWtnH+m3dCjzQ1PCuwl28DDIc3VNnvY29DlIA=
