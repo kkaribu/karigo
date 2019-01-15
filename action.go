@@ -1,8 +1,6 @@
 package karigo
 
 import (
-	"net/http"
-
 	"github.com/kkaribu/jsonapi"
 )
 
