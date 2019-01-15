@@ -1,6 +1,8 @@
 package karigo
 
 import (
+	"net/http"
+
 	"github.com/kkaribu/jsonapi"
 )
 
@@ -117,5 +119,12 @@ func ActionDeleteResource(typ, id string) func(*Access) error {
 		acc.Do(Op{Set: typ, ID: id, Field: "id", Op: "set", Val: ""})
 
 		return nil
+	}
+}
+
+// ActionUnimplemented ...
+func ActionUnimplemented() ActionFunc {
+	return func(acc *Access) error {
+		return jsonapi.NewErrNotImplemented()
 	}
 }
