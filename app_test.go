@@ -18,13 +18,20 @@ func TestIntegrityCheck(t *testing.T) {
 	app.RegisterType(&InvalidType1{})
 
 	errs := app.Check()
-	expectations := []string{
-		// 1
-		"jsonapi: the inverse of relationship rel1 of type invalidtype1 does not exist",
-		// 2
-		"jsonapi: the inverse of relationship rel2 of type invalidtype1 does not exist",
-		// 3
-		"jsonapi: the target type of relationship rel2 of type invalidtype1 does not exist",
+	tests := []struct {
+		name string
+		msg  string
+	}{
+		{
+			name: "inverse rel does not exist",
+			msg:  "jsonapi: the inverse of relationship rel1 of type invalidtype1 does not exist",
+		}, {
+			name: "inverse rel does not exist 2",
+			msg:  "jsonapi: the inverse of relationship rel2 of type invalidtype1 does not exist",
+		}, {
+			name: "target type of relationship does not exist",
+			msg:  "jsonapi: the target type of relationship rel2 of type invalidtype1 does not exist",
+		},
 	}
 
 	errStrs := []string{}
@@ -34,11 +41,11 @@ func TestIntegrityCheck(t *testing.T) {
 	sort.Strings(errStrs)
 
 	// 0
-	tchek.AreEqual(t, 0, len(errStrs), len(expectations))
+	tchek.AreEqual(t, "multiple error messages", len(errStrs), len(tests))
 
-	if len(errStrs) == len(expectations) {
-		for i := 0; i < len(errStrs); i++ {
-			tchek.AreEqual(t, i+1, expectations[i], errStrs[i])
+	if len(errStrs) == len(tests) {
+		for i, test := range tests {
+			tchek.AreEqual(t, test.name, test.msg, errStrs[i])
 		}
 	}
 

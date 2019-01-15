@@ -43,7 +43,7 @@ import (
 // 	expectedBody, err := jsonapi.Marshal(doc, jurl)
 // 	tchek.UnintendedError(err)
 
-// 	tchek.AreEqual(t, 0, string(expectedBody), string(readBody(res.Body)))
+// 	tchek.AreEqual(t, "get request", string(expectedBody), string(readBody(res.Body)))
 // }
 
 func readBody(r io.Reader) string {

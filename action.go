@@ -83,7 +83,8 @@ func ActionGetInclusions(query Query, rels, fields []string, col jsonapi.Collect
 // ActionInsertResource ...
 func ActionInsertResource(res jsonapi.Resource) func(*Access) error {
 	return func(acc *Access) error {
-		id, typ := res.IDAndType()
+		id := res.GetID()
+		typ := res.GetType()
 		for _, attr := range res.Attrs() {
 			acc.Do(Op{Set: typ, ID: id, Field: attr.Name, Op: "set", Val: res.Get(attr.Name)})
 		}

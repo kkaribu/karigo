@@ -238,7 +238,8 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if ctx.Method == "GET" || ctx.Method == "POST" || ctx.Method == "PATCH" {
 		for i := range acc.affected {
-			id, typ := acc.affected[i].IDAndType()
+			id := acc.affected[i].GetID()
+			typ := acc.affected[i].GetType()
 			if typ == ctx.Query.Set && id == ctx.Query.ID {
 				ctx.Out.Data = acc.affected[i]
 			}
