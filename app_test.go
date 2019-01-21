@@ -12,12 +12,14 @@ import (
 func TestIntegrityCheck(t *testing.T) {
 	app := NewApp(nil)
 
-	app.RegisterType(&ValidType1{})
-	app.RegisterType(&ValidType2{})
-	app.RegisterType(&ValidType3{})
-	app.RegisterType(&InvalidType1{})
+	reg := jsonapi.NewRegistry()
 
-	errs := app.Check()
+	reg.RegisterType(&ValidType1{})
+	reg.RegisterType(&ValidType2{})
+	reg.RegisterType(&ValidType3{})
+	reg.RegisterType(&InvalidType1{})
+
+	errs := reg.Check()
 	tests := []struct {
 		name string
 		msg  string
@@ -102,7 +104,7 @@ type InvalidType1 struct {
 func NewMockApp() *App {
 	app := NewApp(nil)
 
-	app.Registry = jsonapi.NewMockRegistry()
+	// app.Registry = jsonapi.NewMockRegistry()
 
 	// app.Get("/mocktypes3", KernelGetCollection, GatePublic)
 

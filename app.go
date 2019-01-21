@@ -23,10 +23,7 @@ func NewApp(store Store) *App {
 		CLI:    cli.NewApp(),
 		Server: http.Server{},
 
-		Registry: jsonapi.NewRegistry(),
-
-		Actions: map[string]Action{},
-		Gates:   map[string][]Gate{},
+		APIs: []API{},
 
 		commitQueue: &commitQueue{},
 	}
@@ -46,10 +43,7 @@ type App struct {
 	CLI    *cli.App    `json:"-"`
 	Server http.Server `json:"-"`
 
-	*jsonapi.Registry
-
-	Actions map[string]Action `json:"-"`
-	Gates   map[string][]Gate `json:"-"`
+	APIs []API
 
 	commitQueue *commitQueue
 }
