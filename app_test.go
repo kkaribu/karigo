@@ -10,7 +10,7 @@ import (
 )
 
 func TestIntegrityCheck(t *testing.T) {
-	app := NewApp(nil)
+	// app := NewApp(nil)
 
 	reg := jsonapi.NewRegistry()
 

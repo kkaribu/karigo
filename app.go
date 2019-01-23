@@ -46,6 +46,8 @@ type App struct {
 	APIs []API
 
 	commitQueue *commitQueue
+
+	*jsonapi.Registry
 }
 
 // Info ...
