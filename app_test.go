@@ -102,7 +102,7 @@ type InvalidType1 struct {
 
 // NewMockApp ...
 func NewMockApp() *App {
-	app := NewApp(nil)
+	app := NewApp()
 
 	// app.Registry = jsonapi.NewMockRegistry()
 

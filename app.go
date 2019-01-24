@@ -17,17 +17,15 @@ import (
 )
 
 // NewApp creates and returns an App object.
-func NewApp(store Store) *App {
+func NewApp() *App {
 	app := &App{
-		Store:  store,
 		CLI:    cli.NewApp(),
 		Server: http.Server{},
 
-		APIs: []API{},
+		API:      API{},
+		Registry: jsonapi.NewRegistry(),
 
 		commitQueue: &commitQueue{},
-
-		Registry: jsonapi.NewRegistry(),
 	}
 
 	app.Config.Store.Options = map[string]string{}
@@ -45,11 +43,10 @@ type App struct {
 	CLI    *cli.App    `json:"-"`
 	Server http.Server `json:"-"`
 
-	APIs []API
+	API API
+	*jsonapi.Registry
 
 	commitQueue *commitQueue
-
-	*jsonapi.Registry
 }
 
 // Info ...
