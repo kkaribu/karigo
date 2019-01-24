@@ -26,6 +26,8 @@ func NewApp(store Store) *App {
 		APIs: []API{},
 
 		commitQueue: &commitQueue{},
+
+		Registry: jsonapi.NewRegistry(),
 	}
 
 	app.Config.Store.Options = map[string]string{}
