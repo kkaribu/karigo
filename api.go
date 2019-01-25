@@ -6,10 +6,8 @@ import (
 
 // API ...
 type API struct {
-	Types         []jsonapi.Type
-	GateFuncs     map[string]Action
-	ValidateFuncs map[string]Action
-	CreateFuncs   map[string]Action
-	UpdateFuncs   map[string]Action
-	DeleteFuncs   map[string]Action
+	Types       []jsonapi.Type
+	CreateFuncs map[string]Action
+	UpdateFuncs map[string]Action
+	DeleteFuncs map[string]Action
 }
